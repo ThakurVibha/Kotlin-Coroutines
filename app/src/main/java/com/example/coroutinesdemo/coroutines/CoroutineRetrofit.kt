@@ -1,7 +1,8 @@
-package com.example.coroutinesdemo
+package com.example.coroutinesdemo.coroutines
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.coroutinesdemo.R
 
 class CoroutineRetrofit : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

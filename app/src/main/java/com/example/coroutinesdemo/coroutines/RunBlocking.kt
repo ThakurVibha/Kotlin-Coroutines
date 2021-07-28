@@ -1,8 +1,9 @@
-package com.example.coroutinesdemo
+package com.example.coroutinesdemo.coroutines
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import com.example.coroutinesdemo.R
 import kotlinx.coroutines.*
 
 class RunBlocking : AppCompatActivity() {

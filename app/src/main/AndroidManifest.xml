@@ -9,10 +9,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CoroutinesDemo">
-        <activity android:name=".CoroutineRetrofit"></activity>
-        <activity android:name=".MainActivity" />
-        <activity android:name=".RunBlocking">
-            <intent-filter>
+
+
+        <service
+            android:name=".coroutines.myservices.MusicService"
+            android:enabled="true"
+            android:exported="true" />
+
+        <activity android:name=".coroutines.CoroutineRetrofit" />
+        <activity android:name=".coroutines.MainActivity" />
+        <activity android:name=".coroutines.RunBlocking"/>
+        <activity android:name=".coroutines.myservices.MusicActivity">
+
+        <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />

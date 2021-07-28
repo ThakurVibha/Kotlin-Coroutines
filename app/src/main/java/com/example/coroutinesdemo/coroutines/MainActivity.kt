@@ -1,9 +1,9 @@
-package com.example.coroutinesdemo
+package com.example.coroutinesdemo.coroutines
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.util.Log.println
+import com.example.coroutinesdemo.R
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.*
 
