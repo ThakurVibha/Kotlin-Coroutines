@@ -2,6 +2,17 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.coroutinesdemo">
 
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,17 +20,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CoroutinesDemo">
+        <activity android:name=".coroutines.room.activities.UserActivity"></activity>
 
+        <service android:name=".coroutines.myservices.foregroundservice.ForeGroundService" />
 
-        <service
-            android:name=".coroutines.myservices.MusicService"
-            android:enabled="true"
-            android:exported="true" />
-
-        <activity android:name=".coroutines.CoroutineRetrofit" />
-        <activity android:name=".coroutines.MainActivity" />
-        <activity android:name=".coroutines.RunBlocking"/>
-        <activity android:name=".coroutines.myservices.MusicActivity">
+        <activity android:name=".coroutines.mycoroutines.CoroutineRetrofit" />
+        <activity android:name=".coroutines.mycoroutines.MainActivity" />
+        <activity android:name=".coroutines.mycoroutines.RunBlocking" />
+        <activity android:name=".coroutines.myservices.foregroundservice.ForeGroundActivity" />
+        <activity android:name=".coroutines.maps.demomaps.codelabmap.activities.GoogleMapsActivity" />
+        <activity android:name=".coroutines.myservices.musicservice.MusicActivity"/>
+        <activity android:name=".coroutines.room.activities.ContactActivity" >
 
         <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,6 +38,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".coroutines.myservices.musicservice.MusicService"
+            android:enabled="true"
+            android:exported="true" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAPTXoOu-rV2w05F2oirVVxlYcEWLW4XIc" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <receiver android:name=".coroutines.myservices.musicservice.MusicBroadcastReceiver" />
     </application>
 
 </manifest>
