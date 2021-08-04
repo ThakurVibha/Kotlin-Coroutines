@@ -12,6 +12,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
 
     <application
         android:allowBackup="true"
@@ -20,19 +21,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CoroutinesDemo">
-        <activity android:name=".coroutines.room.activities.UserActivity"></activity>
-
-        <service android:name=".coroutines.myservices.foregroundservice.ForeGroundService" />
-
-        <activity android:name=".coroutines.mycoroutines.CoroutineRetrofit" />
-        <activity android:name=".coroutines.mycoroutines.MainActivity" />
-        <activity android:name=".coroutines.mycoroutines.RunBlocking" />
-        <activity android:name=".coroutines.myservices.foregroundservice.ForeGroundActivity" />
-        <activity android:name=".coroutines.maps.demomaps.codelabmap.activities.GoogleMapsActivity" />
-        <activity android:name=".coroutines.myservices.musicservice.MusicActivity"/>
-        <activity android:name=".coroutines.room.activities.ContactActivity" >
-
-        <intent-filter>
+        <activity android:name=".coroutines.maps.demomaps.codelabmap.maps.demoservice.DemoServiceActivity">
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -42,7 +32,27 @@
         <service
             android:name=".coroutines.myservices.musicservice.MusicService"
             android:enabled="true"
-            android:exported="true" />
+            android:exported="false" />
+        <service
+            android:name=".coroutines.maps.demomaps.codelabmap.maps.sensors.StepCounterService"
+            android:enabled="true"
+            android:exported="false" />
+
+        <service
+            android:name=".coroutines.maps.demomaps.codelabmap.maps.demoservice.DemoService"
+            android:enabled="true"
+            android:exported="false" />
+
+        <activity android:name=".coroutines.mycoroutines.CoroutineRetrofit" />
+        <activity android:name=".coroutines.mycoroutines.MainActivity" />
+        <activity android:name=".coroutines.mycoroutines.RunBlocking" />
+        <activity android:name=".coroutines.myservices.foregroundservice.ForeGroundActivity" />
+        <activity android:name=".coroutines.room.activities.ContactActivity" />
+        <activity android:name=".coroutines.myservices.musicservice.MusicActivity" />
+        <activity android:name="com.example.fcmdemo.maps.demomaps.codelabmap.activities.CodelabMapActivity" />
+        <activity android:name=".coroutines.maps.demomaps.codelabmap.maps.activities.GoogleMapsActivity">
+
+        </activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -52,6 +62,8 @@
             android:value="@integer/google_play_services_version" />
 
         <receiver android:name=".coroutines.myservices.musicservice.MusicBroadcastReceiver" />
+        <receiver android:name=".coroutines.maps.demomaps.codelabmap.maps.sensors.StepCounterBroadcastReceiver" />
+        <receiver android:name=".coroutines.maps.demomaps.codelabmap.maps.demoservice.DemoBroadcastReceiver"/>
     </application>
 
 </manifest>

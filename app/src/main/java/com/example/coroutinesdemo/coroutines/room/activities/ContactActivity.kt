@@ -19,13 +19,8 @@ class ContactActivity : AppCompatActivity() {
         database = ContactDatabase.getDatabase(this)
         performCrud()
     }
-
     private fun updateData() {
-        Toast.makeText(
-            this@ContactActivity,
-            "You have deleted entity",
-            Toast.LENGTH_SHORT
-        ).show()
+        Toast.makeText(this@ContactActivity, "You have deleted entity", Toast.LENGTH_SHORT).show()
         updateFab.setOnClickListener {
             Toast.makeText(
                 this@ContactActivity,
@@ -33,18 +28,15 @@ class ContactActivity : AppCompatActivity() {
                 Toast.LENGTH_SHORT
             ).show()
             CoroutineScope(Dispatchers.IO).launch {
-                database.contactDao().updateByID(777, 22)
+                var update =edtUpdateName.text.toString()
+                database.contactDao().updateByID(update, 12)
             }
         }
     }
 
-    private fun deleteAllData() {
+    private fun deleteData() {
         deleteFab.setOnClickListener {
-            Toast.makeText(
-                this@ContactActivity,
-                "You have deleted all data",
-                Toast.LENGTH_SHORT
-            ).show()
+            Toast.makeText(this@ContactActivity, "You have deleted all data", Toast.LENGTH_SHORT).show()
             CoroutineScope(Dispatchers.IO).launch {
                 //Deleting all database
                 database.contactDao().deleteAll()
@@ -57,8 +49,7 @@ class ContactActivity : AppCompatActivity() {
     }
     private fun addData() {
         addFab.setOnClickListener {
-            Toast.makeText(this@ContactActivity, "You have added one Entry", Toast.LENGTH_SHORT)
-                .show()
+            Toast.makeText(this@ContactActivity, "You have added one Entry", Toast.LENGTH_SHORT).show()
             CoroutineScope(Dispatchers.IO).launch {
                 var input = edtName.text.toString()
                 database.contactDao().insertData(Contact(12, input, 777))
@@ -69,12 +60,12 @@ class ContactActivity : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     private fun performCrud() {
         addData()
-        deleteAllData()
+        deleteData()
         updateData()
         database.contactDao().getContact().observe(this, Observer {
             database.contactDao().getContact()
             it.map {
-                tvDisplay.text = it.name + " " + it.phone + " " + it.id
+                tvDisplay.text = it.name + " ," + it.phone + ", " + it.id
             }
         })
     }

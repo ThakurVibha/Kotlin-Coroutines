@@ -31,10 +31,10 @@
         android:src="@android:drawable/ic_delete"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.284"
+        app:layout_constraintHorizontal_bias="0.171"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.522"
+        app:layout_constraintVertical_bias="0.518"
         app:tint="#F6F3F3" />
 
     <TextView
@@ -75,10 +75,10 @@
         android:clickable="true"
         app:layout_constraintBottom_toTopOf="@+id/edtName"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.065"
+        app:layout_constraintHorizontal_bias="0.368"
         app:layout_constraintStart_toEndOf="@+id/addFab"
         app:layout_constraintTop_toBottomOf="@+id/tvDisplay"
-        app:layout_constraintVertical_bias="0.223"
+        app:layout_constraintVertical_bias="0.274"
         app:srcCompat="@drawable/ic_baseline_refresh_24"
         app:tint="@color/white" />
 

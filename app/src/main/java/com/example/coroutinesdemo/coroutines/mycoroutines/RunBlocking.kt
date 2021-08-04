@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import com.example.coroutinesdemo.R
-import com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.util.serviceutils.ServiceUtils
+import com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.util.serviceutils.ServiceUtils
 import kotlinx.coroutines.*
 
 class RunBlocking : AppCompatActivity() {

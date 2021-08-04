@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">CoroutinesDemo</string>
     <string name="enter_words">Enter Words</string>
-    <string name="enter_your_name">Enter your name</string>
+    <string name="enter_your_name">Add name in DB</string>
 </resources>
