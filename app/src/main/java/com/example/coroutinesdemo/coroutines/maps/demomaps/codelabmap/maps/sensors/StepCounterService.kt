@@ -47,8 +47,8 @@ class StepCounterService : Service(), SensorEventListener {
         var sensorManager: SensorManager =
             getSystemService(Context.SENSOR_SERVICE) as SensorManager
         val countSensor: Sensor? = sensorManager!!.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
-
         sensorManager?.registerListener(this, countSensor, SensorManager.SENSOR_DELAY_FASTEST)
+        Log.e("registeringListener", "registerListener: ", )
 
 
     }
@@ -61,6 +61,7 @@ class StepCounterService : Service(), SensorEventListener {
     override fun onSensorChanged(p0: SensorEvent?) {
         p0?.let { StepCounterActivity().onStepDetection(it) }
         Log.d("onSensorChanged", "onSensorChanged: ")
+
     }
 
     override fun onAccuracyChanged(p0: Sensor?, p1: Int) {

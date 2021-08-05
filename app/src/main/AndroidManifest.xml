@@ -21,7 +21,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CoroutinesDemo">
-        <activity android:name=".coroutines.maps.demomaps.codelabmap.maps.demoservice.DemoServiceActivity">
+        <activity android:name=".coroutines.maps.demomaps.codelabmap.maps.demoservice.loggingSensorData.SensorLoggingActivity"></activity>
+        <activity android:name=".coroutines.maps.demomaps.codelabmap.maps.demoservice.alarm.AlarmServiceActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -37,9 +38,8 @@
             android:name=".coroutines.maps.demomaps.codelabmap.maps.sensors.StepCounterService"
             android:enabled="true"
             android:exported="false" />
-
         <service
-            android:name=".coroutines.maps.demomaps.codelabmap.maps.demoservice.DemoService"
+            android:name=".coroutines.maps.demomaps.codelabmap.maps.demoservice.alarm.AlarmService"
             android:enabled="true"
             android:exported="false" />
 
@@ -50,9 +50,7 @@
         <activity android:name=".coroutines.room.activities.ContactActivity" />
         <activity android:name=".coroutines.myservices.musicservice.MusicActivity" />
         <activity android:name="com.example.fcmdemo.maps.demomaps.codelabmap.activities.CodelabMapActivity" />
-        <activity android:name=".coroutines.maps.demomaps.codelabmap.maps.activities.GoogleMapsActivity">
-
-        </activity>
+        <activity android:name=".coroutines.maps.demomaps.codelabmap.maps.activities.GoogleMapsActivity"></activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -63,7 +61,7 @@
 
         <receiver android:name=".coroutines.myservices.musicservice.MusicBroadcastReceiver" />
         <receiver android:name=".coroutines.maps.demomaps.codelabmap.maps.sensors.StepCounterBroadcastReceiver" />
-        <receiver android:name=".coroutines.maps.demomaps.codelabmap.maps.demoservice.DemoBroadcastReceiver"/>
+        <receiver android:name=".coroutines.maps.demomaps.codelabmap.maps.demoservice.alarm.AlarmAlertReceiver" />
     </application>
 
 </manifest>

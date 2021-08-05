@@ -185,7 +185,7 @@ object MapsHelper {
     fun createNotificationChannel(context: Context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val serviceChannel = NotificationChannel(
-                ServiceUtils.CHANNEL_ID, "exampleServiceChannel",
+                ServiceUtils.CHANNEL_ID, "Alarm service",
                 NotificationManager.IMPORTANCE_DEFAULT)
             val manager = ContextCompat.getSystemService(context, NotificationManager::class.java)
             manager!!.createNotificationChannel(serviceChannel)

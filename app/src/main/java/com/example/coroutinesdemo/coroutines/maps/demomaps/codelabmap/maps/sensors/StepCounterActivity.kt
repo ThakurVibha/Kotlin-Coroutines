@@ -2,7 +2,6 @@ package com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.sens
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -10,7 +9,6 @@ import android.hardware.SensorManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.coroutinesdemo.R
@@ -29,7 +27,6 @@ class StepCounterActivity : AppCompatActivity(), SensorEventListener {
             MapsHelper.createNotificationChannel(this)
         }
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
-
     }
 
     override fun onResume() {

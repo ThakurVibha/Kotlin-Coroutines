@@ -62,12 +62,12 @@ class MusicService : Service() {
         val buttonPendingIntent = PendingIntent.getBroadcast(this, 0, pendingIntent, 0)
         var notification: Notification =
             NotificationCompat.Builder(this,ServiceUtils.CHANNEL_ID)
-                .setContentTitle("Example Service")
-                .setContentText("Running")
+                .setContentTitle("Alarm service")
+                .setContentText("it's working")
                 .setSmallIcon(R.drawable.ic_lock_idle_alarm)
                 .addAction(
                     R.drawable.ic_lock_idle_alarm,
-                    "Dismiss Notification and Service",
+                    "It's time to wake up",
                     buttonPendingIntent
                 ).build()
         startForeground(123, notification)

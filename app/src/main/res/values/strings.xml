@@ -2,4 +2,7 @@
     <string name="app_name">CoroutinesDemo</string>
     <string name="enter_words">Enter Words</string>
     <string name="enter_your_name">Add name in DB</string>
+    <string name="cancel_alarm">Cancel alarm</string>
+    <string name="no_alarm_service">NO Alarm service</string>
+    <string name="stop_service">Stop Service</string>
 </resources>
