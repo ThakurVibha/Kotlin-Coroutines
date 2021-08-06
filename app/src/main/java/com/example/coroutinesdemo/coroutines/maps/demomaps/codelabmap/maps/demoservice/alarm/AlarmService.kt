@@ -2,82 +2,87 @@ package com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.demo
 
 import android.R
 import android.app.Notification
+import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.hardware.*
+import android.os.Binder
 import android.os.IBinder
 import android.util.Log
-import android.widget.Toast
 import androidx.core.app.NotificationCompat
-import com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.demoservice.alarm.AlarmUtils.backgroundSensor
-import com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.demoservice.alarm.AlarmUtils.onStepDetection
+import androidx.lifecycle.MutableLiveData
+import com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.sensors.StepCounterUtils
 import com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.util.serviceutils.ServiceUtils.Companion.CHANNEL_ID
 
-class AlarmService : Service(),SensorEventListener {
+
+class AlarmService : Service(), SensorEventListener {
+    lateinit var notificationManager: NotificationManager
+
+    private var backgroundSensor: SensorManager? = null
+    var alarmBinder: IBinder = StepCounterService()
+    var mySteps = MutableLiveData<Float>()
+    inner class StepCounterService : Binder() {
+        val myAlarm: AlarmService
+            get() = this@AlarmService
+    }
+
+    override fun onCreate() {
+        super.onCreate()
+        notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+        backgroundSensor = getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        val countSensor: Sensor? = backgroundSensor!!.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+        backgroundSensor?.registerListener(this, countSensor, SensorManager.SENSOR_DELAY_FASTEST)
+        Log.e("alarmTAG", "startStepCounterInBackground: ")
+        startForeground(1001, showNotification("Step Counter" , "Counting..."))
+    }
     override fun onBind(p0: Intent?): IBinder? {
-        Log.e("onBind", p0.toString())
-        return null
+        return alarmBinder
     }
 
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        Log.e("myOnStartCommandTAG", "This is onStartCommand method")
-        Toast.makeText(this, "Alarm has been started", Toast.LENGTH_SHORT).show()
-        showNotification()
-        startStepCounterInBackground()
-        triggerEvent()
-        return START_STICKY
-    }
-
-    private fun triggerEvent() {
-        var listener = object : TriggerEventListener() {
-            override fun onTrigger(p0: TriggerEvent?) {
-                Toast.makeText(this@AlarmService, "this is a tpast", Toast.LENGTH_SHORT).show()
-                Log.e("onTriggerEvent", "onTrigger: ", )
-            }
-        }
-    }
-
-
-    private fun showNotification() {
+    private fun showNotification(title:String , msg:String) :Notification{
         val notificationIntent = Intent(this, AlarmServiceActivity::class.java)
         notificationIntent.apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
-        var pendingIntent = Intent(this, AlarmAlertReceiver::class.java)
+        val pendingIntent = Intent(this, AlarmAlertReceiver::class.java)
         val buttonPendingIntent = PendingIntent.getBroadcast(this, 0, pendingIntent, 0)
-        var notification: Notification =
+        val notification: Notification =
             NotificationCompat.Builder(this, CHANNEL_ID)
-                .setContentTitle("Step counter")
-                .setContentText("Detecting your steps")
+                .setContentTitle(title)
+                .setContentText(msg)
                 .setSmallIcon(R.drawable.ic_lock_idle_alarm)
-                .addAction(
-                    R.drawable.ic_lock_idle_alarm,
-                    "This is step counter service!!",
-                    buttonPendingIntent
-                ).build()
-        startForeground(123, notification)
-        Log.e("alarmTAG", "showNotification: ")
-    }
-
-    private fun startStepCounterInBackground() {
-        var backgroundSensor: SensorManager =
-            getSystemService(Context.SENSOR_SERVICE) as SensorManager
-        val countSensor: Sensor? = backgroundSensor!!.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
-        backgroundSensor?.registerListener(this, countSensor, SensorManager.SENSOR_DELAY_FASTEST)
-        Log.e("registeringSensor", "startStepCounterInBackground: ")
+                .addAction(R.drawable.sym_def_app_icon, "This is step counter service!!", buttonPendingIntent).build()
+        return notification
     }
 
     override fun onSensorChanged(p0: SensorEvent?) {
-//        backgroundSensor!!.unregisterListener(this)
-        p0?.let { onStepDetection(it) }
+        StepCounterUtils.countStepsMethod_2(p0) {
+            mySteps.value = it
+//            startForeground(1001,showNotification("Step Counter","Counting: $it"))
+            notificationManager.notify(1001,showNotification("Step Counter","Counting: $it"))
+        }
 
     }
 
     override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
-        Log.e("TAG", "onAccuracyChanged: ")
+        Log.e("alarmTAG", "onAccuracyChanged: ")
     }
 
 
+    fun getText(): String {
+        return "This is from service++"
+    }
+
+    override fun onDestroy() {
+        Log.e("alarmTAG", "onDestroy: ")
+        super.onDestroy()
+        stopAlarmService()
+    }
+
+    fun stopAlarmService() {
+        backgroundSensor?.unregisterListener(this)
+        stopSelf()
+    }
 }

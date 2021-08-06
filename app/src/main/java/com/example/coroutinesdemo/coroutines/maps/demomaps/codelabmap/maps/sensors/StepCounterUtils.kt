@@ -2,13 +2,12 @@ package com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.sens
 
 import android.hardware.SensorEvent
 import android.hardware.SensorManager
-import kotlinx.android.synthetic.main.activity_step_counter.*
+import android.util.Log
 
 object StepCounterUtils {
 
     var running = false
     var sensorManager: SensorManager? = null
-
     var MagnitudePrevious = 0.0
     var stepCount = 0
     var totalSteps: Float = 0F
@@ -20,7 +19,6 @@ object StepCounterUtils {
         val x = event!!.values[0]
         val y = event.values[1]
         val z = event.values[2]
-
         currentvectorSum = x * x + y * y + z * z
         if (currentvectorSum < 100 && !inStep) {
             inStep = true
@@ -31,6 +29,8 @@ object StepCounterUtils {
             callback(totalSteps)
         }
     }
+
+
 
 
 }

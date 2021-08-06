@@ -21,7 +21,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CoroutinesDemo">
-        <activity android:name=".coroutines.maps.demomaps.codelabmap.maps.demoservice.loggingSensorData.SensorLoggingActivity"></activity>
         <activity android:name=".coroutines.maps.demomaps.codelabmap.maps.demoservice.alarm.AlarmServiceActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -41,7 +40,7 @@
         <service
             android:name=".coroutines.maps.demomaps.codelabmap.maps.demoservice.alarm.AlarmService"
             android:enabled="true"
-            android:exported="false" />
+            android:exported="true" />
 
         <activity android:name=".coroutines.mycoroutines.CoroutineRetrofit" />
         <activity android:name=".coroutines.mycoroutines.MainActivity" />

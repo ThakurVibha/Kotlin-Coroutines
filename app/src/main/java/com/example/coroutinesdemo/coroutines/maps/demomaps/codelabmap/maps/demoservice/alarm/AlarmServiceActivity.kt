@@ -4,57 +4,75 @@ import android.annotation.SuppressLint
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.app.TimePickerDialog
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.hardware.SensorManager
+import android.content.ServiceConnection
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.IBinder
 import android.util.Log
 import android.widget.TimePicker
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.DialogFragment
 import com.example.coroutinesdemo.R
-import com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.demoservice.alarm.AlarmUtils.backgroundSensor
-import com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.demoservice.alarm.AlarmUtils.running
 import com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.sensors.StepCounterUtils
 import com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.util.maputils.MapsHelper
 import kotlinx.android.synthetic.main.activity_demo_service.*
 import java.text.DateFormat
 import java.util.*
 
-class AlarmServiceActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetListener{
+class AlarmServiceActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetListener {
+
+    lateinit var alarmService: AlarmService
+    var mBound = false
+    var mServiceConnection = object : ServiceConnection {
+        override fun onServiceConnected(p0: ComponentName?, p1: IBinder?) {
+            var myServiceBinder: AlarmService.StepCounterService =
+                p1 as AlarmService.StepCounterService
+            alarmService = myServiceBinder.myAlarm
+            Log.e("alarmTAG", "Connected: ")
+            alarmService.mySteps.observe(this@AlarmServiceActivity) {
+                tvSteps.text = "$it"
+            }
+        }
+        override fun onServiceDisconnected(p0: ComponentName?) {
+            Log.e("alarmTAG", "Disconnected: ")
+
+        }
+
+    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_demo_service)
         MapsHelper.createNotificationChannel(this)
-        backgroundSensor = getSystemService(Context.SENSOR_SERVICE) as SensorManager
         onClick()
     }
 
     private fun onClick() {
         counterServiceBtn.setOnClickListener {
-            running=true
             startDemoService()
-            Log.e("alarmTAG", "onStartButtonClicked: ")
+            titleTv.setText(alarmService.getText())
+            Log.e("alarmTAG", "onStepDetection: ")
         }
         stopDemoBtn.setOnClickListener {
             stopDemoService()
             Log.e("alarmTAG", "onStoppedButtonClicked: ")
         }
         setAlarmBtn.setOnClickListener {
-            running=false
             var timePickerDialog: DialogFragment = AlarmPickerFragment()
             timePickerDialog.show(supportFragmentManager, "time picker")
-            Log.e("alarmTAG", "onClick: ", )
+            Log.e("alarmTAG", "onClick: ")
         }
-
         cancelAlarmBtn.setOnClickListener {
             cancelAlarm()
+
         }
+
     }
 
     override fun onTimeSet(p0: TimePicker?, hourday: Int, minute: Int) {
@@ -64,19 +82,19 @@ class AlarmServiceActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetList
         c.set(Calendar.SECOND, 0)
         updateTimeText(c)
         setAlarm(c)
-        Log.e("alarmTAG", "onTimeSet: ", )
+        Log.e("alarmTAG", "onTimeSet: ")
 
     }
 
     private fun updateTimeText(c: Calendar) {
-        Log.e("alarmTAG", "updateTimeText: ", )
+        Log.e("alarmTAG", "updateTimeText: ")
         var alarmTextView = "Alarm set for  "
         alarmTextView += DateFormat.getTimeInstance(DateFormat.SHORT).format(c.time)
         titleTv.setText(alarmTextView)
     }
 
     private fun setAlarm(c: Calendar) {
-        Log.e("alarmTAG", "setAlarm: ", )
+        Log.e("alarmTAG", "setAlarm: ")
         var alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
         var alarmIntent = Intent(this, AlarmAlertReceiver::class.java)
         val alarmPendingIntent = PendingIntent.getBroadcast(this, 2, alarmIntent, 0)
@@ -92,12 +110,13 @@ class AlarmServiceActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetList
         alarmManager.cancel(alarmPendingIntent)
         titleTv.setText("Alarm has been cancelled")
         Toast.makeText(this, "Alarm has been cancelled", Toast.LENGTH_LONG).show()
-        Log.e("alarmTAG", "cancelAlarm: ", )
+        Log.e("alarmTAG", "cancelAlarm: ")
     }
 
     private fun stopDemoService() {
-        var stopService = Intent(this, AlarmService::class.java)
-        stopService(stopService)
+        alarmService.stopAlarmService()
+//        var stopService = Intent(this, AlarmService::class.java)
+//        stopService(stopService)
         Toast.makeText(this, "Service stopped", Toast.LENGTH_LONG).show()
         Log.e("alarmTAG", "onStoppedService: ")
     }
@@ -105,12 +124,30 @@ class AlarmServiceActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetList
     private fun startDemoService() {
         try {
             var startService = Intent(this, AlarmService::class.java)
+            bindService(intent, mServiceConnection, BIND_AUTO_CREATE)
             startService(startService)
             Toast.makeText(this, "Service started", Toast.LENGTH_LONG).show()
             Log.e("TAG", "onStartService: ")
         } catch (e: Exception) {
             Log.e("alarmTAG", e.localizedMessage)
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        var intent = Intent(applicationContext, AlarmService::class.java)
+        bindService(intent, mServiceConnection, Context.BIND_AUTO_CREATE)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        unbindService(mServiceConnection)
+        mBound = false
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
     }
 
 }

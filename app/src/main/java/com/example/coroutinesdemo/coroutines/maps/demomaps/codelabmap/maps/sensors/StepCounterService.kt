@@ -71,8 +71,7 @@ class StepCounterService : Service(), SensorEventListener {
     private fun showNotification() {
         val notificationIntent = Intent(this, SensorServiceActivity::class.java)
         notificationIntent.apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        }
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK }
         var pendingIntent = Intent(this, StepCounterBroadcastReceiver::class.java)
         val buttonPendingIntent = PendingIntent.getBroadcast(this, 0, pendingIntent, 0)
         var notification: Notification =

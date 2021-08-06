@@ -2,6 +2,7 @@ package com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.sens
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -9,6 +10,7 @@ import android.hardware.SensorManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.coroutinesdemo.R
@@ -79,22 +81,22 @@ class StepCounterActivity : AppCompatActivity(), SensorEventListener {
         stepValue.setText(stepCount.toString())
     }
 
-//    fun startMyService(view: View) {
-//        try {
-//            var startService = Intent(this, StepCounterService::class.java)
-//            startService(startService)
-//            Toast.makeText(this, "Service started", Toast.LENGTH_LONG).show()
-//            Log.e("onStartingService", "onStart: ")
-//        } catch (e: Exception) {
-//            Log.e("TAG", e.localizedMessage)
-//        }
-//    }
-//
-//    fun stopMyService(view: View) {
-//        var stopService = Intent(this, StepCounterService::class.java)
-//        startService(stopService)
-//        Toast.makeText(this, "Service stopped", Toast.LENGTH_LONG).show()
-//        Log.e("TAG", "onStart: ")
-//    }
+    fun startMyService(view: View) {
+        try {
+            var startService = Intent(this, StepCounterService::class.java)
+            startService(startService)
+            Toast.makeText(this, "Service started", Toast.LENGTH_LONG).show()
+            Log.e("onStartingService", "onStart: ")
+        } catch (e: Exception) {
+            Log.e("TAG", e.localizedMessage)
+        }
+    }
+
+    fun stopMyService(view: View) {
+        var stopService = Intent(this, StepCounterService::class.java)
+        startService(stopService)
+        Toast.makeText(this, "Service stopped", Toast.LENGTH_LONG).show()
+        Log.e("TAG", "onStart: ")
+    }
 
 }
