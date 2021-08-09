@@ -10,17 +10,27 @@ import android.location.Address
 import android.location.Geocoder
 import android.os.Build
 import android.util.Log
+import android.widget.AutoCompleteTextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.coroutinesdemo.R
+import com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.activities.GoogleMapsActivity
+import com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.util.maputils.MapConstants.isSource
+import com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.util.maputils.MapConstants.latLongDestination
+import com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.util.maputils.MapConstants.latLongOrigin
+import com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.util.maputils.MapConstants.map
 import com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.util.serviceutils.ServiceUtils
 import com.example.fcmdemo.maps.demomaps.codelabmap.model.MapPlace
 import com.example.myfirstapp.GoogleMaps.MarkerInfoWindowAdapter
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationResult
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.*
 import com.google.maps.android.clustering.ClusterManager
+import kotlinx.android.synthetic.main.activity_google_maps.*
 import java.io.IOException
 
 object MapsHelper {
@@ -186,10 +196,31 @@ object MapsHelper {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val serviceChannel = NotificationChannel(
                 ServiceUtils.CHANNEL_ID, "Alarm service",
-                NotificationManager.IMPORTANCE_DEFAULT)
+                NotificationManager.IMPORTANCE_DEFAULT
+            )
             val manager = ContextCompat.getSystemService(context, NotificationManager::class.java)
             manager!!.createNotificationChannel(serviceChannel)
         }
     }
+    fun changeMapType(mMap: GoogleMap) {
+        mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+    }
+
+
+    //Update lastLocation with new location and update map with new location coordinates.
+    fun makeLocationCall(context: Context) {
+        MapConstants.locationCallback = object : LocationCallback() {
+            override fun onLocationResult(p0: LocationResult) {
+                super.onLocationResult(p0)
+                MapConstants.lastLocation = p0.lastLocation
+                MapsHelper.placeMarkerOnMap(
+                    context,
+                    MapConstants.map,
+                    LatLng(MapConstants.lastLocation.latitude, MapConstants.lastLocation.longitude)
+                )
+            }
+        }
+    }
+
 
 }

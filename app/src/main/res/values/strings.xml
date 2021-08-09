@@ -5,4 +5,6 @@
     <string name="cancel_alarm">Cancel alarm</string>
     <string name="no_alarm_service">NO Alarm service</string>
     <string name="stop_service">Stop Service</string>
+    <string name="random_number_is">Random Number</string>
+    <string name="refresh">Refresh</string>
 </resources>

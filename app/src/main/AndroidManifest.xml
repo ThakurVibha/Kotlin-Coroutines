@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.coroutinesdemo">
+    package="com.example.coroutinesdemo" >
 
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
@@ -20,11 +20,10 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.CoroutinesDemo">
-        <activity android:name=".coroutines.maps.demomaps.codelabmap.maps.demoservice.alarm.AlarmServiceActivity">
+        android:theme="@style/Theme.CoroutinesDemo" >
+        <activity android:name=".coroutines.maps.demomaps.codelabmap.maps.activities.GoogleMapsActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -41,6 +40,8 @@
             android:name=".coroutines.maps.demomaps.codelabmap.maps.demoservice.alarm.AlarmService"
             android:enabled="true"
             android:exported="true" />
+        <service android:name=".coroutines.maps.demomaps.codelabmap.maps.demoservice.alarm.CounterService" />
+        <service android:name=".coroutines.maps.demomaps.codelabmap.maps.activities.MapService" />
 
         <activity android:name=".coroutines.mycoroutines.CoroutineRetrofit" />
         <activity android:name=".coroutines.mycoroutines.MainActivity" />
@@ -49,7 +50,6 @@
         <activity android:name=".coroutines.room.activities.ContactActivity" />
         <activity android:name=".coroutines.myservices.musicservice.MusicActivity" />
         <activity android:name="com.example.fcmdemo.maps.demomaps.codelabmap.activities.CodelabMapActivity" />
-        <activity android:name=".coroutines.maps.demomaps.codelabmap.maps.activities.GoogleMapsActivity"></activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

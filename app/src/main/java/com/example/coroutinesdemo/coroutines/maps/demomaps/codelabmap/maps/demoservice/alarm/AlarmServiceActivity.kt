@@ -18,7 +18,6 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.DialogFragment
 import com.example.coroutinesdemo.R
-import com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.sensors.StepCounterUtils
 import com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.util.maputils.MapsHelper
 import kotlinx.android.synthetic.main.activity_demo_service.*
 import java.text.DateFormat
@@ -28,21 +27,21 @@ class AlarmServiceActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetList
 
     lateinit var alarmService: AlarmService
     var mBound = false
-    var mServiceConnection = object : ServiceConnection {
+
+    private var mServiceConnection = object : ServiceConnection {
         override fun onServiceConnected(p0: ComponentName?, p1: IBinder?) {
             var myServiceBinder: AlarmService.StepCounterService =
                 p1 as AlarmService.StepCounterService
             alarmService = myServiceBinder.myAlarm
-            Log.e("alarmTAG", "Connected: ")
             alarmService.mySteps.observe(this@AlarmServiceActivity) {
                 tvSteps.text = "$it"
+                Log.e("alarmTAG", "onServiceConnected: ")
             }
         }
+
         override fun onServiceDisconnected(p0: ComponentName?) {
             Log.e("alarmTAG", "Disconnected: ")
-
         }
-
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -51,16 +50,16 @@ class AlarmServiceActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetList
         setContentView(R.layout.activity_demo_service)
         MapsHelper.createNotificationChannel(this)
         onClick()
+        startDemoService()
     }
 
     private fun onClick() {
         counterServiceBtn.setOnClickListener {
-            startDemoService()
             titleTv.setText(alarmService.getText())
             Log.e("alarmTAG", "onStepDetection: ")
         }
         stopDemoBtn.setOnClickListener {
-            stopDemoService()
+            ServiceUtils.stopDemoService(this)
             Log.e("alarmTAG", "onStoppedButtonClicked: ")
         }
         setAlarmBtn.setOnClickListener {
@@ -70,7 +69,6 @@ class AlarmServiceActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetList
         }
         cancelAlarmBtn.setOnClickListener {
             cancelAlarm()
-
         }
 
     }
@@ -87,10 +85,11 @@ class AlarmServiceActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetList
     }
 
     private fun updateTimeText(c: Calendar) {
-        Log.e("alarmTAG", "updateTimeText: ")
         var alarmTextView = "Alarm set for  "
         alarmTextView += DateFormat.getTimeInstance(DateFormat.SHORT).format(c.time)
         titleTv.setText(alarmTextView)
+        Log.e("alarmTAG", "updateTimeText: ")
+
     }
 
     private fun setAlarm(c: Calendar) {
@@ -113,13 +112,6 @@ class AlarmServiceActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetList
         Log.e("alarmTAG", "cancelAlarm: ")
     }
 
-    private fun stopDemoService() {
-        alarmService.stopAlarmService()
-//        var stopService = Intent(this, AlarmService::class.java)
-//        stopService(stopService)
-        Toast.makeText(this, "Service stopped", Toast.LENGTH_LONG).show()
-        Log.e("alarmTAG", "onStoppedService: ")
-    }
 
     private fun startDemoService() {
         try {
@@ -137,16 +129,19 @@ class AlarmServiceActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetList
         super.onStart()
         var intent = Intent(applicationContext, AlarmService::class.java)
         bindService(intent, mServiceConnection, Context.BIND_AUTO_CREATE)
+        Log.e("alarmTAG", "onStart: ")
     }
 
     override fun onStop() {
         super.onStop()
         unbindService(mServiceConnection)
         mBound = false
+        Log.e("alarmTAG", "onStop: ")
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        Log.e("alarmTAG", "onDestroy: ")
 
     }
 

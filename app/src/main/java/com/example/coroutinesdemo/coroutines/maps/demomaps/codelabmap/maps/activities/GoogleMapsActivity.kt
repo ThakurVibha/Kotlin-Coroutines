@@ -5,9 +5,9 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
-import android.hardware.SensorEventListener
 import android.location.Address
 import android.location.Geocoder
+import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import android.widget.AutoCompleteTextView
@@ -15,43 +15,74 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.example.coroutinesdemo.R
-import com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.util.maputils.MapConstants
-import com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.util.maputils.MapConstants.DOT
-import com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.util.maputils.MapConstants.LOCATION_PERMISSION_REQUEST_CODE
-import com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.util.maputils.MapConstants.PATTERN_POLYLINE_DOTTED
-import com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.util.maputils.MapConstants.REQUEST_CHECK_SETTINGS
-import com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.util.maputils.MapConstants.fusedLocationClient
-import com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.util.maputils.MapConstants.isSource
-import com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.util.maputils.MapConstants.lastLocation
-import com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.util.maputils.MapConstants.latLongDestination
-import com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.util.maputils.MapConstants.latLongOrigin
-import com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.util.maputils.MapConstants.locationCallback
-import com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.util.maputils.MapConstants.locationRequest
-import com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.util.maputils.MapConstants.locationUpdateState
 import com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.util.maputils.MapsHelper
-import com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.util.maputils.MapsHelper.startLocationUpdates
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
-import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.*
 import kotlinx.android.synthetic.main.activity_google_maps.*
+import kotlinx.android.synthetic.main.activity_main.view.*
 import java.io.IOException
+import kotlin.math.cos
+import kotlin.math.roundToLong
+import kotlin.math.sin
+import kotlin.math.sqrt
 
 @Suppress("DEPRECATION")
+
+
 class GoogleMapsActivity : AppCompatActivity(), OnMapReadyCallback,
-    GoogleMap.OnPolylineClickListener, GoogleMap.OnMapClickListener {
+    GoogleMap.OnPolylineClickListener, GoogleMap.OnMapClickListener,
+    LocationSource.OnLocationChangedListener {
+
+    private val PATTERN_GAP_LENGTH_PX = 20
+    private val DOT: PatternItem = Dot()
+    private val GAP: PatternItem = Gap(PATTERN_GAP_LENGTH_PX.toFloat())
+    private val PATTERN_POLYLINE_DOTTED = listOf(GAP, DOT)
+    private lateinit var map: GoogleMap
+    var mapFragment: SupportMapFragment? = null
+    var latLongOrigin: LatLng? = null
+    var latLongDestination: LatLng? = null
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    var TAG = "//"
+    lateinit var locationCallback: LocationCallback
+    lateinit var locationRequest: LocationRequest
+    private var locationUpdateState = false
+    private lateinit var lastLocation: Location
+    var isSource = true
+    var lat1: Double? = null
+    var lon1: Double? = null
+    var lat2: Double? = null
+    var lon2: Double? = null
+
+    companion object {
+        private const val LOCATION_PERMISSION_REQUEST_CODE = 1
+        private const val REQUEST_CHECK_SETTINGS = 2
+        private const val AVERAGE_RADIUS_EARTH = 6371
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_google_maps)
-        MapConstants.mapFragment = supportFragmentManager
+        mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
-        MapConstants.mapFragment!!.getMapAsync(this)
+        mapFragment!!.getMapAsync(this)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         makeLocationCall()
         createLocationRequest()
         onClick()
+    }
+
+    private fun calculateDistanceInKm() {
+        var latDistance=Math.toRadians((lat2!! -lat1!!))
+        var lonDistance=Math.toRadians((lon2!! - lon1!!))
+        val a = (sin(latDistance / 2) * sin(latDistance / 2)
+                + (cos(Math.toRadians(lat2!!.toDouble())) * cos(Math.toRadians(lon2!!.toDouble()))
+                * sin(lonDistance / 2) * sin(lonDistance / 2)))
+        val c = 2 * Math.atan2(sqrt(a), sqrt(1 - a))
+        var distance=Math.round(AVERAGE_RADIUS_EARTH * c).toDouble()+450
+        Log.e("distance", distance.toString())
+        tvDistance.setText(distance.toString()+ "KM")
     }
 
     private fun onClick() {
@@ -59,6 +90,8 @@ class GoogleMapsActivity : AppCompatActivity(), OnMapReadyCallback,
         floatingActionButton.setOnClickListener {
             if (isSource) {
                 searchLocation()
+                MapsHelper.changeMapType(map)
+                calculateDistanceInKm()
             } else {
                 searchLocation()
                 searchDestination()
@@ -66,7 +99,7 @@ class GoogleMapsActivity : AppCompatActivity(), OnMapReadyCallback,
         }
     }
 
-    fun searchLocation() {
+    private fun searchLocation() {
         isSource = false
         val locationSource: AutoCompleteTextView = findViewById<AutoCompleteTextView>(R.id.tvSource)
         lateinit var location: String
@@ -84,15 +117,16 @@ class GoogleMapsActivity : AppCompatActivity(), OnMapReadyCallback,
             }
             val address = addressList!![0]
             val latLng = LatLng(address.latitude, address.longitude)
-            latLongOrigin = (LatLng(address.latitude.toDouble(), address.longitude.toDouble()))
-            Log.e("hi", latLongOrigin.toString())
-            MapConstants.map!!.addMarker(MarkerOptions().position(latLng).title(location))
-            MapConstants.map!!.animateCamera(CameraUpdateFactory.newLatLng(latLng))
+            latLongOrigin = (LatLng(address.latitude, address.longitude))
+            lat1 = address.latitude
+            lon1 = address.longitude
+            map!!.addMarker(MarkerOptions().position(latLng).title(location))
+            map!!.animateCamera(CameraUpdateFactory.newLatLng(latLng))
             Toast.makeText(applicationContext, "Here you go(: (:", Toast.LENGTH_LONG).show()
         }
     }
 
-    fun searchDestination() {
+    private fun searchDestination() {
         isSource = true
         val destinationSource: AutoCompleteTextView =
             findViewById<AutoCompleteTextView>(R.id.tvDestination)
@@ -106,29 +140,27 @@ class GoogleMapsActivity : AppCompatActivity(), OnMapReadyCallback,
             val geoCoder = Geocoder(this)
             try {
                 addressList = geoCoder.getFromLocationName(location, 1)
-
             } catch (e: IOException) {
                 e.printStackTrace()
             }
             val address = addressList!![0]
             val latLng = LatLng(address.latitude, address.longitude)
             latLongDestination = (LatLng(address.latitude.toDouble(), address.longitude.toDouble()))
-            Log.e("hello", latLongDestination.toString())
-            MapConstants.map!!.addMarker(MarkerOptions().position(latLng).title(location))
-            MapConstants.map!!.animateCamera(CameraUpdateFactory.newLatLng(latLng))
+            Log.e("getLatLng", latLongDestination.toString())
+            lat2 = address.latitude
+            lon2 = address.longitude
+            map!!.addMarker(MarkerOptions().position(latLng).title(location))
+            map!!.animateCamera(CameraUpdateFactory.newLatLng(latLng))
             Toast.makeText(applicationContext, "Here you go(: (:", Toast.LENGTH_LONG).show()
         }
-
-//        drawRoutes()
     }
 
     private fun refreshLocation() {
-        MapConstants.map.setOnMapClickListener {
+        map.setOnMapClickListener {
             getLocation.text = MapsHelper.getAddress(this, it)
         }
     }
 
-    //Update lastLocation with new location and update map with new location coordinates.
     private fun makeLocationCall() {
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(p0: LocationResult) {
@@ -136,14 +168,35 @@ class GoogleMapsActivity : AppCompatActivity(), OnMapReadyCallback,
                 lastLocation = p0.lastLocation
                 MapsHelper.placeMarkerOnMap(
                     this@GoogleMapsActivity,
-                    MapConstants.map,
+                    map,
                     LatLng(lastLocation.latitude, lastLocation.longitude)
                 )
             }
         }
     }
 
-    //     To Receive Location Updates
+    private fun startLocationUpdates() {
+        //1
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+                LOCATION_PERMISSION_REQUEST_CODE
+            )
+            return
+        }
+        //2
+        fusedLocationClient.requestLocationUpdates(
+            locationRequest,
+            locationCallback,
+            null /* Looper */
+        )
+    }
+
     private fun createLocationRequest() {
         locationRequest = LocationRequest()
         locationRequest.interval = 1000
@@ -157,7 +210,7 @@ class GoogleMapsActivity : AppCompatActivity(), OnMapReadyCallback,
         // 5
         task.addOnSuccessListener {
             locationUpdateState = true
-            startLocationUpdates(this)
+            startLocationUpdates()
         }
         task.addOnFailureListener { e ->
             // 6
@@ -175,7 +228,7 @@ class GoogleMapsActivity : AppCompatActivity(), OnMapReadyCallback,
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
-        MapConstants.map = googleMap
+        map = googleMap
 
         if (ActivityCompat.checkSelfPermission(
                 this,
@@ -195,60 +248,46 @@ class GoogleMapsActivity : AppCompatActivity(), OnMapReadyCallback,
                 LOCATION_PERMISSION_REQUEST_CODE
             )
         }
-        MapConstants.map.isMyLocationEnabled = true
-        MapConstants.map.getUiSettings().setZoomControlsEnabled(true)
+        map.isMyLocationEnabled = true
+        map.getUiSettings().setZoomControlsEnabled(true)
 
         fusedLocationClient.lastLocation.addOnSuccessListener(this) { location ->
             if (location != null) {
                 lastLocation = location
                 val currentLatLng = LatLng(location.latitude, location.longitude)
-                MapConstants.map.animateCamera(
-                    CameraUpdateFactory.newLatLngZoom(
-                        currentLatLng,
-                        12f
-                    )
-                )
+                map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f))
             }
             setUpMap()
         }
         //Adding a Polyline
-        MapsHelper.setPolyine(MapConstants.map)
-        MapConstants.map.setOnPolylineClickListener(this)
+        MapsHelper.setPolyine(map)
+        map.setOnPolylineClickListener(this)
         refreshLocation()
     }
 
-    //granting permissions
     @SuppressLint("MissingPermission")
     private fun setUpMap() {
-        MapConstants.map.mapType = GoogleMap.MAP_TYPE_TERRAIN
-        // To add marker at current location
+        map.mapType = GoogleMap.MAP_TYPE_TERRAIN
         fusedLocationClient.lastLocation.addOnSuccessListener(this) { location ->
-            // Got last known location. In some rare situations this can be null.
             if (location != null) {
                 lastLocation = location
                 val currentLatLng = LatLng(location.latitude, location.longitude)
                 MapsHelper.placeMarkerOnMap(
                     this,
-                    MapConstants.map,
+                    map,
                     LatLng(lastLocation.latitude, lastLocation.longitude)
                 )
-                MapConstants.map.animateCamera(
-                    CameraUpdateFactory.newLatLngZoom(
-                        currentLatLng,
-                        12f
-                    )
-                )
+                map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f))
             }
         }
     }
 
-    //to handle location updates
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_CHECK_SETTINGS) {
             if (resultCode == RESULT_OK) {
                 locationUpdateState = true
-                startLocationUpdates(this)
+                startLocationUpdates()
             }
         }
     }
@@ -261,11 +300,10 @@ class GoogleMapsActivity : AppCompatActivity(), OnMapReadyCallback,
     override fun onResume() {
         super.onResume()
         if (!locationUpdateState) {
-            startLocationUpdates(this)
+            startLocationUpdates()
         }
     }
 
-    //onClick drop the marker
     override fun onPolylineClick(p0: Polyline) {
         if (p0.pattern == null || !p0.pattern!!.contains(DOT)) {
             p0.pattern = PATTERN_POLYLINE_DOTTED
@@ -283,6 +321,9 @@ class GoogleMapsActivity : AppCompatActivity(), OnMapReadyCallback,
 
     }
 
-}
+    override fun onLocationChanged(p0: Location) {
+        TODO("Not yet implemented")
+    }
 
+}
 
