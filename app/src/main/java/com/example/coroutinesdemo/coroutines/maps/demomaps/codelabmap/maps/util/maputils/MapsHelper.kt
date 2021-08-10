@@ -16,8 +16,6 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.coroutinesdemo.R
-import com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.activities.GoogleMapsActivity
-import com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.util.maputils.MapConstants.isSource
 import com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.util.maputils.MapConstants.latLongDestination
 import com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.util.maputils.MapConstants.latLongOrigin
 import com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.util.maputils.MapConstants.map
@@ -32,9 +30,24 @@ import com.google.android.gms.maps.model.*
 import com.google.maps.android.clustering.ClusterManager
 import kotlinx.android.synthetic.main.activity_google_maps.*
 import java.io.IOException
+import kotlin.math.cos
+import kotlin.math.sin
+import kotlin.math.sqrt
 
 object MapsHelper {
+    fun setPolyine() {
+        val polyline1 = map.addPolyline(
+            PolylineOptions()
+                .clickable(true)
+                .add(
+                    latLongOrigin,
+                    latLongDestination
+                )
+        )
+        polyline1.tag = "A"
 
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(28.644800, 77.216721), 4f))
+    }
     fun drawPolygonApi(coordinates: List<List<Double>>, mMap: GoogleMap): Polyline {
         val options = PolylineOptions()
         for (i in coordinates.indices) {
@@ -75,27 +88,6 @@ object MapsHelper {
         return addressText
     }
 
-    fun addMarker(mMap: GoogleMap, latlong: LatLng, animate: Boolean, context: Context): Marker {
-        val addMarker = mMap.addMarker(MarkerOptions().position(latlong))
-        if (animate) {
-            mMap.animateCamera(
-                CameraUpdateFactory.newLatLngZoom(
-                    LatLng(
-                        latlong.latitude,
-                        latlong.longitude
-                    ),
-                    mMap.cameraPosition.zoom
-                )
-            )
-            val markerOptions = MarkerOptions().position(latlong)
-            mMap.setInfoWindowAdapter(MarkerInfoWindowAdapter(context));
-
-            val titleStr = getAddress(context, latlong)
-            markerOptions.title(titleStr)
-            mMap.addMarker(markerOptions)
-        }
-        return addMarker
-    }
 
     fun addClusteredMarkers(context: Context, places: List<MapPlace>, mainmap: GoogleMap) {
 
@@ -140,22 +132,6 @@ object MapsHelper {
         mMap.addMarker(markerOptions)
     }
 
-    //Adding a Polyline
-    fun setPolyine(map: GoogleMap) {
-        val polyline1 = map.addPolyline(
-            PolylineOptions()
-                .clickable(true)
-                .add(
-                    //28.5355° N, 77.3910° E
-                    LatLng(28.644800, 77.216721),
-                    LatLng(30.741482, 76.768066)
-                )
-        )
-        polyline1.tag = "A"
-
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(28.644800, 77.216721), 4f))
-
-    }
 
     //Adding a circle
     fun addCircle(mainmap: GoogleMap, context: Context) {
@@ -202,6 +178,7 @@ object MapsHelper {
             manager!!.createNotificationChannel(serviceChannel)
         }
     }
+
     fun changeMapType(mMap: GoogleMap) {
         mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
     }
@@ -221,6 +198,5 @@ object MapsHelper {
             }
         }
     }
-
 
 }

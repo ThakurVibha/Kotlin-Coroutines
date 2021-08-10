@@ -7,4 +7,8 @@
     <string name="stop_service">Stop Service</string>
     <string name="random_number_is">Random Number</string>
     <string name="refresh">Refresh</string>
+    <string name="hybrid_map">Hybrid Map</string>
+    <string name="satellite">Satellite</string>
+    <string name="terrain">Terrain</string>
+    <string name="normal">Normal</string>
 </resources>
