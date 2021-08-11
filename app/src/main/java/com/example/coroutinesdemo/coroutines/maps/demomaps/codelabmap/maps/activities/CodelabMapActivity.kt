@@ -20,8 +20,6 @@ class CodelabMapActivity : AppCompatActivity(),
         setContentView(R.layout.activity_codelab_map)
         streetViewPanoramaView = findViewById<StreetViewPanoramaView>(R.id.codelabMap)
     }
-
-
     override fun onStreetViewPanoramaChange(p0: StreetViewPanoramaLocation) {
         Log.e("street", (p0.position.latitude + p0.position.longitude).toString())
     }

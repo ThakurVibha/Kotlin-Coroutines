@@ -1,6 +1,8 @@
 package com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.activities
 
 import android.Manifest
+import android.R.attr.alpha
+import android.R.attr.radius
 import android.annotation.SuppressLint
 import android.content.*
 import android.content.pm.PackageManager
@@ -11,6 +13,8 @@ import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
+import android.view.MotionEvent
+import android.view.View
 import android.widget.AutoCompleteTextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -35,18 +39,24 @@ import kotlin.math.sqrt
 
 
 class GoogleMapsActivity : AppCompatActivity(), OnMapReadyCallback,
-    GoogleMap.OnPolylineClickListener, GoogleMap.OnMapClickListener,
-    GoogleMap.OnCameraMoveStartedListener {
+    GoogleMap.OnPolylineClickListener,
+    GoogleMap.OnCameraMoveStartedListener, GoogleMap.OnCircleClickListener {
 
     companion object {
         const val LOCATION_PERMISSION_REQUEST_CODE = 1
         const val REQUEST_CHECK_SETTINGS = 2
         const val AVERAGE_RADIUS_EARTH = 6371
-        const val GEOFENECE_LAT = 30.6327
-        const val GEOFENECE_LONG = 76.8243
-        const val GEOFENECE_RADIUS = 10000.00
+        const val GEOFENECE_LAT = 28.5355
+        const val GEOFENECE_LONG = 77.3910
+        const val GEOFENECE_RADIUS = 2000F
+        const val GEOFENCE_ID = "Mygeofence ID"
+        var latLng = LatLng(GEOFENECE_LAT, GEOFENECE_LONG)
+        internal const val ACTION_GEOFENCE_EVENT =
+            "HuntMainActivity.treasureHunt.action.ACTION_GEOFENCE_EVENT"
     }
 
+    var isGeofenceAdd = false
+    lateinit var geoFenceHelper: GeoFenceHelper
     var latLongOrigin: LatLng? = null
     var latLongDestination: LatLng? = null
     private val PATTERN_GAP_LENGTH_PX = 20
@@ -68,14 +78,13 @@ class GoogleMapsActivity : AppCompatActivity(), OnMapReadyCallback,
     private var lon2: Double? = null
     var mapService = MapService()
     var isBound = false
-
+    private lateinit var geofencingClient: GeofencingClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_google_maps)
         mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
-
         mapFragment!!.getMapAsync(this)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         makeLocationCall()
@@ -84,12 +93,25 @@ class GoogleMapsActivity : AppCompatActivity(), OnMapReadyCallback,
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             ServiceUtils.notificationChannel(this)
         }
+        geofencingClient = LocationServices.getGeofencingClient(this)
+        geoFenceHelper = GeoFenceHelper(this)
     }
 
-    private fun requestMyGpsLocation(callback: (location: Location) -> Unit) {
+    //adding geofence
+    private fun addGeofence() {
+        val geofence: Geofence = geoFenceHelper.getGeofence(
+            GEOFENCE_ID,
+            latLng,
+            GEOFENECE_RADIUS,
+            Geofence.GEOFENCE_TRANSITION_ENTER
+                    or Geofence.GEOFENCE_TRANSITION_EXIT or Geofence.GEOFENCE_TRANSITION_DWELL
+        )!!
+        val geofencingRequest: GeofencingRequest = geoFenceHelper.getGeofencingRequest(geofence)!!
+        val pendingIntent = geoFenceHelper.getPendingIntent()
+
         if (ActivityCompat.checkSelfPermission(
                 this,
-                android.Manifest.permission.ACCESS_FINE_LOCATION
+                Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             ActivityCompat.requestPermissions(
@@ -98,38 +120,32 @@ class GoogleMapsActivity : AppCompatActivity(), OnMapReadyCallback,
                 LOCATION_PERMISSION_REQUEST_CODE
             )
             return
+        } else {
+            fusedLocationClient.requestLocationUpdates(
+                locationRequest,
+                locationCallback, null
+            )
         }
-        var client = LocationServices.getFusedLocationProviderClient(this)
-        client.requestLocationUpdates(
-            locationRequest,
-            object : LocationCallback() {
-                override fun onLocationResult(locationResult: LocationResult?) {
-                    val location = locationResult?.lastLocation
-                    if (location != null) {
-                        callback.invoke(location)
-                        location.checkForGeoFenceEntry(
-                            location,
-                            GEOFENECE_LAT,
-                            GEOFENECE_LONG,
-                            GEOFENECE_RADIUS,
+        geofencingClient.addGeofences(geofencingRequest, pendingIntent)
+            .addOnSuccessListener {
+                Log.e("success", "addGeofence: ")
 
-                            )
-                    }
-                }
-
-            },
-            null,
-        )
+            }.addOnFailureListener {
+                it.toString()
+                var errorMessage = geoFenceHelper.getMYErrorString(it)
+                Log.e("errormessage", "addGeofence: $errorMessage")
+            }
     }
 
-
-    fun setMap() {
+    private fun addCircle(map: GoogleMap) {
+        isGeofenceAdd = true
         map.addCircle(
             CircleOptions()
                 .center(LatLng(GEOFENECE_LAT, GEOFENECE_LONG))
-                .radius(GEOFENECE_RADIUS)
-                .strokeColor(ContextCompat.getColor(this, R.color.black))
-                .fillColor(ContextCompat.getColor(this, R.color.black))
+                .radius(GEOFENECE_RADIUS.toDouble())
+                .strokeColor(ContextCompat.getColor(this, R.color.teal_700)).clickable(true)
+                .clickable(true)
+                .fillColor(ContextCompat.getColor(this, android.R.color.transparent))
         )
     }
 
@@ -139,13 +155,19 @@ class GoogleMapsActivity : AppCompatActivity(), OnMapReadyCallback,
             if (isSource) {
                 searchLocation()
                 calculateDistance()
-                setMap()
-
             } else {
                 searchLocation()
                 searchDestination()
             }
         }
+        btnGeofence.setOnClickListener {
+            addGeofence()
+            addCircle(map)
+        }
+//        addCircle(map).apply {
+//            addGeofence()
+//        }
+
     }
 
     private fun startService() {
@@ -335,7 +357,6 @@ class GoogleMapsActivity : AppCompatActivity(), OnMapReadyCallback,
 
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
-
         if (ActivityCompat.checkSelfPermission(
                 this,
                 Manifest.permission.ACCESS_FINE_LOCATION
@@ -370,6 +391,8 @@ class GoogleMapsActivity : AppCompatActivity(), OnMapReadyCallback,
         }
         map.setOnPolylineClickListener(this)
         refreshLocation()
+        onMapClick(map)
+
     }
 
     @SuppressLint("MissingPermission")
@@ -414,25 +437,16 @@ class GoogleMapsActivity : AppCompatActivity(), OnMapReadyCallback,
         ).show()
     }
 
-    override fun onMapClick(p0: LatLng) {
-        getLocation.text = MapsHelper.getAddress(this, p0)
-//        latLongDestination?.let { addMarker() }
-
+    //override fun onMapClick(p0: LatLng) {
+    //    getLocation.text = MapsHelper.getAddress(this, p0)
+    private fun onMapClick(map: GoogleMap) {
+        map.setOnMapClickListener {
+            Log.e("onMapClicking", "onMapClick: ")
+        }
     }
 
-//    override fun onLocationChanged(p0: Location) {
-//        var lat = p0.latitude
-//        var lon = p0.longitude
-//        lastLocation = p0
-//        var latLng=LatLng(lat, lon)
-//        val markerOptions = MarkerOptions()
-//        markerOptions.position(latLng)
-//        markerOptions.title("I am here")
-//        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
-//        Log.e("onLocationChanged", "onLocationChanged: ", )
-//    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_CHECK_SETTINGS) {
             if (resultCode == RESULT_OK) {
@@ -444,6 +458,11 @@ class GoogleMapsActivity : AppCompatActivity(), OnMapReadyCallback,
 
     override fun onCameraMoveStarted(p0: Int) {
         Toast.makeText(this, "Camera moved", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onCircleClick(p0: Circle) {
+        Toast.makeText(this, "HII", Toast.LENGTH_SHORT).show()
+        p0.isClickable = true
     }
 
 
