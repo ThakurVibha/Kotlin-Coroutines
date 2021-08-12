@@ -1,5 +1,6 @@
 package com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.util.maputils
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -16,6 +17,8 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.coroutinesdemo.R
+import com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.util.maputils.MapConstants.fusedLocationClient
+import com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.util.maputils.MapConstants.lastLocation
 import com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.util.maputils.MapConstants.latLongDestination
 import com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.util.maputils.MapConstants.latLongOrigin
 import com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.util.maputils.MapConstants.map
@@ -183,7 +186,6 @@ object MapsHelper {
         mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
     }
 
-
     //Update lastLocation with new location and update map with new location coordinates.
     fun makeLocationCall(context: Context) {
         MapConstants.locationCallback = object : LocationCallback() {
@@ -197,6 +199,8 @@ object MapsHelper {
                 )
             }
         }
+
+
     }
 
 }

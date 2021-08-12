@@ -3,7 +3,6 @@
     package="com.example.coroutinesdemo">
 
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -13,7 +12,10 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
-    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
 
     <application
         android:allowBackup="true"
@@ -22,7 +24,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CoroutinesDemo">
-        <activity android:name=".coroutines.maps.demomaps.codelabmap.maps.activities.GoogleMapsActivity">
+        <activity android:name=".coroutines.maps.demomaps.codelabmap.maps.motionlayout.MotionLayoutActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -33,11 +35,11 @@
         <service
             android:name=".coroutines.myservices.musicservice.MusicService"
             android:enabled="true"
-            android:exported="false" />
+            android:exported="true" />
         <service
             android:name=".coroutines.maps.demomaps.codelabmap.maps.sensors.StepCounterService"
             android:enabled="true"
-            android:exported="false" />
+            android:exported="true" />
         <service
             android:name=".coroutines.maps.demomaps.codelabmap.maps.demoservice.alarm.AlarmService"
             android:enabled="true"
@@ -46,6 +48,7 @@
 
         <activity android:name=".coroutines.mycoroutines.CoroutineRetrofit" />
         <activity android:name=".coroutines.mycoroutines.MainActivity" />
+        <activity android:name=".coroutines.maps.demomaps.codelabmap.maps.permissions.ActivityResult"/>
         <activity android:name=".coroutines.mycoroutines.RunBlocking" />
         <activity android:name=".coroutines.myservices.foregroundservice.ForeGroundActivity" />
         <activity android:name=".coroutines.room.activities.ContactActivity" />
@@ -61,6 +64,11 @@
         <receiver android:name=".coroutines.myservices.musicservice.MusicBroadcastReceiver" />
         <receiver android:name=".coroutines.maps.demomaps.codelabmap.maps.sensors.StepCounterBroadcastReceiver" />
         <receiver android:name=".coroutines.maps.demomaps.codelabmap.maps.demoservice.alarm.AlarmAlertReceiver" />
+        <receiver android:name=".coroutines.maps.demomaps.codelabmap.maps.activities.GeofenceBroadcastReceiver">
+            <intent-filter>
+                <action android:name="com.example.geofence.ACTION_RECEIVE_GEOFENCE" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

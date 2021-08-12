@@ -13,6 +13,8 @@ import com.google.android.gms.location.GeofencingEvent
 class GeofenceBroadcastReceiver : BroadcastReceiver() {
 
     override fun onReceive(p0: Context?, p1: Intent?) {
+
+//        Toast.makeText(p0, Toast.LENGTH_SHORT).show()
         Log.e("geofence", "Your Geo fence has been triggered")
         var geofencingEvent = GeofencingEvent.fromIntent(p1)
         if (geofencingEvent.hasError()) {

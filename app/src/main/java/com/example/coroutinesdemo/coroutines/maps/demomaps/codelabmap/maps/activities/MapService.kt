@@ -5,7 +5,7 @@ import android.content.Intent
 import android.os.Binder
 import android.os.IBinder
 import android.util.Log
-import com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.demoservice.alarm.ServiceUtils.showNotification
+import com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.demoservice.alarm.ServiceUtils.showNotificationBackground
 import java.util.*
 
 class MapService : Service() {
@@ -20,7 +20,7 @@ class MapService : Service() {
 
     override fun onCreate() {
         super.onCreate()
-        startForeground(1001, showNotification("Bound service", "Tracking location in background", this))
+        startForeground(1001, showNotificationBackground("Bound service", "Tracking location in background", this))
         Log.e("TAG", "onCreate:", )
     }
 

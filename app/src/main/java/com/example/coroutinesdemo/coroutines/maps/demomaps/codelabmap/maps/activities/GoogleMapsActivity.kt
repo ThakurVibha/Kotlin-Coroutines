@@ -46,8 +46,8 @@ class GoogleMapsActivity : AppCompatActivity(), OnMapReadyCallback,
         const val LOCATION_PERMISSION_REQUEST_CODE = 1
         const val REQUEST_CHECK_SETTINGS = 2
         const val AVERAGE_RADIUS_EARTH = 6371
-        const val GEOFENECE_LAT = 28.5355
-        const val GEOFENECE_LONG = 77.3910
+        const val GEOFENECE_LAT = 30.6327
+        const val GEOFENECE_LONG = 76.8243
         const val GEOFENECE_RADIUS = 2000F
         const val GEOFENCE_ID = "Mygeofence ID"
         var latLng = LatLng(GEOFENECE_LAT, GEOFENECE_LONG)
@@ -55,6 +55,7 @@ class GoogleMapsActivity : AppCompatActivity(), OnMapReadyCallback,
             "HuntMainActivity.treasureHunt.action.ACTION_GEOFENCE_EVENT"
     }
 
+    lateinit var location: String
     var isGeofenceAdd = false
     lateinit var geoFenceHelper: GeoFenceHelper
     var latLongOrigin: LatLng? = null
@@ -72,6 +73,7 @@ class GoogleMapsActivity : AppCompatActivity(), OnMapReadyCallback,
     private var locationUpdateState = false
     private lateinit var lastLocation: Location
     var isSource = true
+
     private var lat1: Double? = null
     private var lon1: Double? = null
     private var lat2: Double? = null
@@ -96,6 +98,7 @@ class GoogleMapsActivity : AppCompatActivity(), OnMapReadyCallback,
         geofencingClient = LocationServices.getGeofencingClient(this)
         geoFenceHelper = GeoFenceHelper(this)
     }
+
 
     //adding geofence
     private fun addGeofence() {
@@ -129,13 +132,23 @@ class GoogleMapsActivity : AppCompatActivity(), OnMapReadyCallback,
         geofencingClient.addGeofences(geofencingRequest, pendingIntent)
             .addOnSuccessListener {
                 Log.e("success", "addGeofence: ")
-
             }.addOnFailureListener {
                 it.toString()
                 var errorMessage = geoFenceHelper.getMYErrorString(it)
                 Log.e("errormessage", "addGeofence: $errorMessage")
+            }.addOnCanceledListener {
+                Log.e("onCanceled", "addGeofence: ")
             }
     }
+
+    private fun removeGeofence() {
+        var removePendingIntent = geoFenceHelper.getPendingIntent()
+        geofencingClient.removeGeofences(removePendingIntent)
+        Log.e("removeGeofence", "removeGeofence: ")
+        Toast.makeText(this, "Geofence has been removed", Toast.LENGTH_SHORT).show()
+
+    }
+
 
     private fun addCircle(map: GoogleMap) {
         isGeofenceAdd = true
@@ -160,14 +173,13 @@ class GoogleMapsActivity : AppCompatActivity(), OnMapReadyCallback,
                 searchDestination()
             }
         }
-        btnGeofence.setOnClickListener {
+        btnAddGeofence.setOnClickListener {
             addGeofence()
             addCircle(map)
         }
-//        addCircle(map).apply {
-//            addGeofence()
-//        }
-
+        btnRemoveGeo.setOnClickListener {
+            removeGeofence()
+        }
     }
 
     private fun startService() {
@@ -222,10 +234,8 @@ class GoogleMapsActivity : AppCompatActivity(), OnMapReadyCallback,
     private fun searchLocation() {
         isSource = false
         val locationSource: AutoCompleteTextView = findViewById<AutoCompleteTextView>(R.id.tvSource)
-        lateinit var location: String
         location = locationSource.text.toString()
         var addressList: List<Address>? = null
-
         if (location == null || location == "") {
             Toast.makeText(applicationContext, "provide location", Toast.LENGTH_SHORT).show()
         } else {
@@ -250,7 +260,6 @@ class GoogleMapsActivity : AppCompatActivity(), OnMapReadyCallback,
         isSource = true
         val destinationSource: AutoCompleteTextView =
             findViewById<AutoCompleteTextView>(R.id.tvDestination)
-        lateinit var location: String
         location = destinationSource.text.toString()
         var addressList: List<Address>? = null
 
@@ -355,6 +364,7 @@ class GoogleMapsActivity : AppCompatActivity(), OnMapReadyCallback,
         }
     }
 
+
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
         if (ActivityCompat.checkSelfPermission(
@@ -386,6 +396,8 @@ class GoogleMapsActivity : AppCompatActivity(), OnMapReadyCallback,
                 lastLocation = location
                 val currentLatLng = LatLng(location.latitude, location.longitude)
                 map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f))
+                Log.e("currentLatLng", "current location $currentLatLng")
+
             }
             setUpMap()
         }
@@ -407,8 +419,7 @@ class GoogleMapsActivity : AppCompatActivity(), OnMapReadyCallback,
                     map,
                     LatLng(lastLocation.latitude, lastLocation.longitude)
                 )
-                map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f))
-            }
+                map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f))}
         }
     }
 

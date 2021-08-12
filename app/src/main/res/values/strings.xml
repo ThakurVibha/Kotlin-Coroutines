@@ -11,4 +11,17 @@
     <string name="satellite">Satellite</string>
     <string name="terrain">Terrain</string>
     <string name="normal">Normal</string>
+    <string name="click_to_add_geofence">Click to add geofence</string>
+    <string name="remove_gfnce">Remove GFNCE</string>
+    <string name="start">Start</string>
+    <string name="permission_required">Camera access is required to display the camera preview.</string>
+    <string name="permission_granted">Permission is granted. You can use the camera now.</string>
+    <string name="ok">OK</string>
+    <string name="send_result">Send Result</string>
+    <string name="launch_image_picker">Launch Image Picker</string>
+    <string name="dummy_text">Dummy text</string>
+    <string name="take_picture">Take Picture</string>
+    <string name="slide_up_to_move_dog_towards_the_bone">Slide Up to move dog towards the bone</string>
+    <string name="slide_down_to_move_dog_away_from_bone">Slide Down to move dog away from bone</string>
+
 </resources>
