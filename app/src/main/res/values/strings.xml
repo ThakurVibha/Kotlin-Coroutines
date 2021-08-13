@@ -43,5 +43,7 @@
     <string name="this_is_fragment_1">This is fragment 1</string>
     <string name="this_is_fragment_2">This is Fragment 2</string>
     <string name="this_is_fragment_3">This is fragment 3</string>
+    <string name="open_activity">Open Activity</string>
+    <string name="this_is_dummy_activity">This is dummy activity</string>
 
 </resources>

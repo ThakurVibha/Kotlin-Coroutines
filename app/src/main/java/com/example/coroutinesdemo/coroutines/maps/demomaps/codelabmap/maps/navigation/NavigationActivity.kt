@@ -20,7 +20,6 @@ class NavigationActivity : AppCompatActivity() {
         toggle = ActionBarDrawerToggle(
             this,
             drawerLayout,
-
             R.string.nav_open,
             R.string.nav_close
         )
@@ -47,7 +46,7 @@ class NavigationActivity : AppCompatActivity() {
                 R.id.fragment2 -> setCurrentFragment(BottomNavigationFragment2())
                 R.id.fragment3 -> setCurrentFragment(BottomNavigationFragment3())
             }
-             true
+            true
         }
     }
 
@@ -65,9 +64,13 @@ class NavigationActivity : AppCompatActivity() {
         nav_view2.setNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.mapSatellite ->
-                    Toast.makeText(applicationContext, "I am also working fine ", Toast.LENGTH_SHORT)
+                    Toast.makeText(
+                        applicationContext,
+                        "I am also working fine ",
+                        Toast.LENGTH_SHORT
+                    )
                         .show()
-                R.id.mapNormal->
+                R.id.mapNormal ->
                     Toast.makeText(this, "I am working fine ", Toast.LENGTH_SHORT).show()
             }
             true
@@ -83,8 +86,7 @@ class NavigationActivity : AppCompatActivity() {
 
     private fun setCurrentFragment(fragment: Fragment) {
         Log.e("TAG", "setCurrentFragment: ")
-        supportFragmentManager.beginTransaction().add(R.id.fragment_container, fragment).commitAllowingStateLoss()
-
-
+        supportFragmentManager.beginTransaction().add(R.id.fragment_container, fragment)
+            .commitAllowingStateLoss()
     }
 }
