@@ -146,7 +146,6 @@ class GoogleMapsActivity : AppCompatActivity(), OnMapReadyCallback,
         geofencingClient.removeGeofences(removePendingIntent)
         Log.e("removeGeofence", "removeGeofence: ")
         Toast.makeText(this, "Geofence has been removed", Toast.LENGTH_SHORT).show()
-
     }
 
 
@@ -228,7 +227,7 @@ class GoogleMapsActivity : AppCompatActivity(), OnMapReadyCallback,
         val c = 2 * Math.atan2(sqrt(a), sqrt(1 - a))
         var distance = Math.round(AVERAGE_RADIUS_EARTH * c).toDouble() + 350
         Log.e("distance", distance.toString())
-        tvDistance.setText(distance.toString() + "KM")
+        tvDistance.text = distance.toString() + "KM"
     }
 
     private fun searchLocation() {
@@ -327,7 +326,7 @@ class GoogleMapsActivity : AppCompatActivity(), OnMapReadyCallback,
         fusedLocationClient.requestLocationUpdates(
             locationRequest,
             locationCallback,
-            null /* Looper */
+            null
         )
 
 
@@ -409,7 +408,7 @@ class GoogleMapsActivity : AppCompatActivity(), OnMapReadyCallback,
 
     @SuppressLint("MissingPermission")
     private fun setUpMap() {
-        map.mapType = GoogleMap.MAP_TYPE_TERRAIN
+        map.mapType = GoogleMap.MAP_TYPE_SATELLITE
         fusedLocationClient.lastLocation.addOnSuccessListener(this) { location ->
             if (location != null) {
                 lastLocation = location
@@ -419,7 +418,8 @@ class GoogleMapsActivity : AppCompatActivity(), OnMapReadyCallback,
                     map,
                     LatLng(lastLocation.latitude, lastLocation.longitude)
                 )
-                map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f))}
+                map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f))
+            }
         }
     }
 

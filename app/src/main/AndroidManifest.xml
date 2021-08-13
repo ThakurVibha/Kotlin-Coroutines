@@ -24,7 +24,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CoroutinesDemo">
-        <activity android:name=".coroutines.maps.demomaps.codelabmap.maps.motionlayout.MotionLayoutActivity">
+        <activity android:name=".coroutines.maps.demomaps.codelabmap.maps.motionlayout.MotionLayoutActivity" />
+        <activity android:name=".coroutines.maps.demomaps.codelabmap.maps.bottomsheets.SampleActivity" />
+        <activity android:name=".coroutines.maps.demomaps.codelabmap.maps.navigation.NavigationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -48,7 +50,7 @@
 
         <activity android:name=".coroutines.mycoroutines.CoroutineRetrofit" />
         <activity android:name=".coroutines.mycoroutines.MainActivity" />
-        <activity android:name=".coroutines.maps.demomaps.codelabmap.maps.permissions.ActivityResult"/>
+        <activity android:name=".coroutines.maps.demomaps.codelabmap.maps.permissions.ActivityResult" />
         <activity android:name=".coroutines.mycoroutines.RunBlocking" />
         <activity android:name=".coroutines.myservices.foregroundservice.ForeGroundActivity" />
         <activity android:name=".coroutines.room.activities.ContactActivity" />

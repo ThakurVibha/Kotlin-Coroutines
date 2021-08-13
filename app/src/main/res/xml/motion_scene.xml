@@ -2,13 +2,11 @@
 <MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:motion="http://schemas.android.com/apk/res-auto">
 
-
     <Transition
         motion:constraintSetEnd="@layout/activity_motion_end"
         motion:constraintSetStart="@layout/activity_motion_start"
         motion:duration="100"
         motion:transitionFlags="beginOnFirstDraw">
-
         motion:clickAction="transitionToEnd"
         motion:targetId="@+id/movingImageView" />
     </Transition>
@@ -16,6 +14,4 @@
         motion:dragDirection="dragUp"
         motion:touchAnchorId="@id/button"
         motion:touchAnchorSide="end" />
-
-
 </MotionScene>
