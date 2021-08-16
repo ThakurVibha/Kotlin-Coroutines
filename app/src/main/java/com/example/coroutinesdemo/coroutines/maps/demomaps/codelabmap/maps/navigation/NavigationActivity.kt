@@ -12,11 +12,14 @@ import kotlinx.android.synthetic.main.activity_navigation.*
 
 
 class NavigationActivity : AppCompatActivity() {
+    companion object {
+        private const val FRAGMENT_BACK_STACK = "myfragment"
+    }
+
     lateinit var toggle: ActionBarDrawerToggle
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_navigation)
-
         toggle = ActionBarDrawerToggle(
             this,
             drawerLayout,
@@ -31,7 +34,6 @@ class NavigationActivity : AppCompatActivity() {
         )
         drawerLayout.addDrawerListener(toggle)
         supportActionBar?.setHomeButtonEnabled(true)
-        toggle.isDrawerIndicatorEnabled = true
         toggle.syncState()
         onNavigationSelection()
         onBottomNavigationSelected()
@@ -49,7 +51,6 @@ class NavigationActivity : AppCompatActivity() {
             true
         }
     }
-
 
     private fun onNavigationSelection() {
         nav_view1.setNavigationItemSelectedListener {
@@ -78,6 +79,7 @@ class NavigationActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
         if (toggle.onOptionsItemSelected(item)) {
             return true
         }
@@ -86,7 +88,7 @@ class NavigationActivity : AppCompatActivity() {
 
     private fun setCurrentFragment(fragment: Fragment) {
         Log.e("TAG", "setCurrentFragment: ")
-        supportFragmentManager.beginTransaction().add(R.id.fragment_container, fragment)
+        supportFragmentManager.beginTransaction().add(R.id.fragment_container, fragment).addToBackStack(null)
             .commitAllowingStateLoss()
     }
 }

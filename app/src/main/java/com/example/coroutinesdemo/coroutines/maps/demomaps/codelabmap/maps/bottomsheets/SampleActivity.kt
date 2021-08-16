@@ -4,9 +4,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import com.example.coroutinesdemo.R
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.navigation.SheetFragment
 import kotlinx.android.synthetic.main.activity_sample.*
-import java.lang.reflect.Array.newInstance
 
 class SampleActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

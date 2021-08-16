@@ -27,7 +27,9 @@
         <activity android:name=".coroutines.maps.demomaps.codelabmap.maps.navigation.DummyActivity"></activity>
         <activity android:name=".coroutines.maps.demomaps.codelabmap.maps.motionlayout.MotionLayoutActivity" />
         <activity android:name=".coroutines.maps.demomaps.codelabmap.maps.bottomsheets.SampleActivity" />
-        <activity android:name=".coroutines.maps.demomaps.codelabmap.maps.navigation.NavigationActivity">
+        <activity android:name=".coroutines.maps.demomaps.codelabmap.maps.navigation.NavigationActivity"/>
+            <activity android:name=".coroutines.maps.demomaps.codelabmap.maps.navigation.ToolbarActivity">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
@@ -18,14 +19,15 @@ class BottomNavigationFragment1 : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         return inflater.inflate(R.layout.fragment_bottom_navigation1, container, false)
     }
 
     private fun onClick() {
         btnOpen.setOnClickListener {
             val intent = Intent(requireActivity(), DummyActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
             requireActivity().startActivity(intent)
-//            requireActivity().finish()
         }
     }
 
@@ -35,5 +37,6 @@ class BottomNavigationFragment1 : Fragment() {
 
 
     }
+
 
 }

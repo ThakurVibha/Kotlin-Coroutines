@@ -11,12 +11,15 @@ import com.example.coroutinesdemo.R
 
 class BottomNavigationFragment2 : Fragment() {
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        requireActivity().supportFragmentManager.beginTransaction().addToBackStack(
+            BottomNavigationFragment3.FRAGMENT_BACK_STACK
+        )
         return inflater.inflate(R.layout.fragment_bottom_navigation2, container, false)
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

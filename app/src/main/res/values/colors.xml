@@ -3,9 +3,10 @@
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">@color/purple_700</color>
     <color name="purple_700">@color/black</color>
-    <color name="teal_200">#FFC107</color>
+    <color name="teal_200">#4CAF50</color>
     <color name="teal_700">#FF5722</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="sheet_element_text_color">#4CAF50</color>
+    <color name="transparent">#FFFFFFFF</color>
 </resources>

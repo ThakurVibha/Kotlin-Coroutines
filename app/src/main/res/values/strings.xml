@@ -45,5 +45,22 @@
     <string name="this_is_fragment_3">This is fragment 3</string>
     <string name="open_activity">Open Activity</string>
     <string name="this_is_dummy_activity">This is dummy activity</string>
+    <string name="you_have_just_opened_activity_2">You have just opened activity 2</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="username">UserName</string>
+    <string name="user">Username</string>
+    <string name="textview">Sign up to ensure you do not miss any promotional event and can get benefit for the same.</string>
+    <string name="stay_with_your_business">Stay with your business</string>
+    <string name="next">Next</string>
+    <string name="show_snackbar">Show Snackbar</string>
+    <string name="shoes_2_5">Shoes 2*5 and 4*7</string>
+    <string name="place_the_order">Place the order</string>
+    <string name="_67676">67676 $</string>
+    <string name="login">Login</string>
+    <string name="vibha_thakur">Vibha Thakur</string>
+    <string name="_699_555_1122">(699) 555-1122</string>
+    <string name="mobile">Mobile</string>
+    <string name="swipe_up_and_down_for_persistent_bottom_sheet">Swipe up and down for bottom sheet</string>
 
 </resources>

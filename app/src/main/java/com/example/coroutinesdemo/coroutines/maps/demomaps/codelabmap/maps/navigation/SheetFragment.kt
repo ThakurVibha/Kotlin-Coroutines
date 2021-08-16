@@ -1,4 +1,4 @@
-package com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.bottomsheets
+package com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.navigation
 
 import android.content.Context
 import android.os.Bundle
@@ -25,9 +25,7 @@ class SheetFragment : BottomSheetDialogFragment() {
     }
 
     private fun setBottomSheetElements() {
-        textView1.setOnClickListener {
-            Toast.makeText(activity, "Location 1 has been selected", Toast.LENGTH_LONG).show()
-        }
+
         textView2.setOnClickListener {
             Toast.makeText(activity, "Location 2 has been selected", Toast.LENGTH_LONG).show()
         }
