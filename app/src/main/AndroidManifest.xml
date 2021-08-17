@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.coroutinesdemo">
+    package="com.example.coroutinesdemo" >
 
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -23,13 +23,14 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.CoroutinesDemo">
-        <activity android:name=".coroutines.maps.demomaps.codelabmap.maps.navigation.DummyActivity"></activity>
+        android:theme="@style/Theme.CoroutinesDemo" >
+
+        <activity android:name=".coroutines.maps.demomaps.codelabmap.maps.navigation.tablayout.TabLayoutActivity" />
+        <activity android:name=".coroutines.maps.demomaps.codelabmap.maps.navigation.bottomnavigation.DummyActivity" />
         <activity android:name=".coroutines.maps.demomaps.codelabmap.maps.motionlayout.MotionLayoutActivity" />
         <activity android:name=".coroutines.maps.demomaps.codelabmap.maps.bottomsheets.SampleActivity" />
-        <activity android:name=".coroutines.maps.demomaps.codelabmap.maps.navigation.NavigationActivity"/>
-            <activity android:name=".coroutines.maps.demomaps.codelabmap.maps.navigation.ToolbarActivity">
-
+        <activity android:name=".coroutines.maps.demomaps.codelabmap.maps.navigation.bottomnavigation.NavigationActivity" />
+        <activity android:name=".coroutines.maps.demomaps.codelabmap.maps.navigation.bottomnavigation.ToolbarActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -69,7 +70,7 @@
         <receiver android:name=".coroutines.myservices.musicservice.MusicBroadcastReceiver" />
         <receiver android:name=".coroutines.maps.demomaps.codelabmap.maps.sensors.StepCounterBroadcastReceiver" />
         <receiver android:name=".coroutines.maps.demomaps.codelabmap.maps.demoservice.alarm.AlarmAlertReceiver" />
-        <receiver android:name=".coroutines.maps.demomaps.codelabmap.maps.activities.GeofenceBroadcastReceiver">
+        <receiver android:name=".coroutines.maps.demomaps.codelabmap.maps.activities.GeofenceBroadcastReceiver" >
             <intent-filter>
                 <action android:name="com.example.geofence.ACTION_RECEIVE_GEOFENCE" />
             </intent-filter>

@@ -62,5 +62,10 @@
     <string name="_699_555_1122">(699) 555-1122</string>
     <string name="mobile">Mobile</string>
     <string name="swipe_up_and_down_for_persistent_bottom_sheet">Swipe up and down for bottom sheet</string>
+    <string name="user_1">User 1</string>
+    <string name="add_2">Add 2</string>
+    <string name="add_1">Add 1</string>
+    <string name="add_3">Add 3</string>
+    <string name="response">Response:</string>
 
 </resources>

@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="#FF5722"
-    tools:context=".coroutines.maps.demomaps.codelabmap.maps.navigation.BottomNavigationFragment3">
+    tools:context=".coroutines.maps.demomaps.codelabmap.maps.navigation.bottomnavigation.BottomNavigationFragment3">
 
     <TextView
         android:id="@+id/textView6"

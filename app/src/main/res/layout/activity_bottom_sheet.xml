@@ -6,7 +6,7 @@
     android:layout_margin="20dp"
     android:layout_height="wrap_content"
     android:background="@drawable/custom_dialog_round_corners"
-    tools:context=".coroutines.maps.demomaps.codelabmap.maps.navigation.SheetFragment">
+    tools:context=".coroutines.maps.demomaps.codelabmap.maps.navigation.bottomsheet.SheetFragment">
 
     <TextView
         android:id="@+id/textView2"

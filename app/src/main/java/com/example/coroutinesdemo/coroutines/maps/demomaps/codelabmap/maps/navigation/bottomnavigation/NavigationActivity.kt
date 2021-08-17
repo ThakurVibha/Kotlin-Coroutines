@@ -1,21 +1,23 @@
-package com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.navigation
+package com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.navigation.bottomnavigation
 
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.widget.ListAdapter
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.coroutinesdemo.R
+import com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.toast
 import kotlinx.android.synthetic.main.activity_navigation.*
 
 
 class NavigationActivity : AppCompatActivity() {
+    lateinit var adapter: ListAdapter
     companion object {
         private const val FRAGMENT_BACK_STACK = "myfragment"
     }
-
     lateinit var toggle: ActionBarDrawerToggle
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,14 +39,19 @@ class NavigationActivity : AppCompatActivity() {
         toggle.syncState()
         onNavigationSelection()
         onBottomNavigationSelected()
-
     }
+
+
 
     private fun onBottomNavigationSelected() {
         bottom_navigation.setOnItemSelectedListener {
             Log.e("//", "onCreate: ")
             when (it.itemId) {
-                R.id.fragment1 -> setCurrentFragment(BottomNavigationFragment1())
+                R.id.fragment1 -> {
+                    "this is toats".toast(this)
+                    setCurrentFragment(BottomNavigationFragment1())
+                }
+
                 R.id.fragment2 -> setCurrentFragment(BottomNavigationFragment2())
                 R.id.fragment3 -> setCurrentFragment(BottomNavigationFragment3())
             }

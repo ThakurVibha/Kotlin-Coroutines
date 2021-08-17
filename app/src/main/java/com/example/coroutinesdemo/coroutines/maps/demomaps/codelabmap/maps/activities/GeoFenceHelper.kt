@@ -19,7 +19,6 @@ class GeoFenceHelper(base: Context?) : ContextWrapper(base) {
         private const val TAG = "GeoFenceHelper"
 
     }
-
     fun getGeofencingRequest(geofence: Geofence?): GeofencingRequest? {
         return GeofencingRequest.Builder()
             .addGeofence(geofence)

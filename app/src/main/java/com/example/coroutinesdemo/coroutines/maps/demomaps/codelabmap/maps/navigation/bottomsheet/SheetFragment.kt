@@ -1,4 +1,4 @@
-package com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.navigation
+package com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.navigation.bottomsheet
 
 import android.content.Context
 import android.os.Bundle

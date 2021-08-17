@@ -1,4 +1,4 @@
-package com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.navigation
+package com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.navigation.bottomsheet
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -27,7 +27,6 @@ class PersistentBottomSheet : BottomSheetDialogFragment() {
 
     private fun showPersistentBottomSheet() {
         btnBottomsheet.setOnClickListener {
-
             Toast.makeText(requireContext(), "HII", Toast.LENGTH_SHORT).show()
         }
     }

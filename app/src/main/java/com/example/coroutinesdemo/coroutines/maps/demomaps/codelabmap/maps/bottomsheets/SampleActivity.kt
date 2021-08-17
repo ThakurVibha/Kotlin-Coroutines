@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import com.example.coroutinesdemo.R
-import com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.navigation.SheetFragment
+import com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.navigation.bottomsheet.SheetFragment
 import kotlinx.android.synthetic.main.activity_sample.*
 
 class SampleActivity : AppCompatActivity() {
@@ -19,6 +19,7 @@ class SampleActivity : AppCompatActivity() {
             val bottomsSheetFragment = SheetFragment()
             bottomsSheetFragment.show(supportFragmentManager, "bottomSheetFragment")
             Log.e("TAG", "onClick: ", )
+
         }
     }
 }
