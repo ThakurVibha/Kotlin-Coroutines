@@ -67,5 +67,9 @@
     <string name="add_1">Add 1</string>
     <string name="add_3">Add 3</string>
     <string name="response">Response:</string>
+    <string name="action_settings">Settings</string>
+    <string name="preview_description">Image and Video preview will appear here</string>
+    <string name="btn_take_picture">Take Picture</string>
+    <string name="btn_record_video">Record Video</string>
 
 </resources>

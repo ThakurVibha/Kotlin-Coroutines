@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".coroutines.maps.demomaps.codelabmap.maps.camera.CameraActivity">
+
+    <Button
+        android:id="@+id/btnTakePicture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="56dp"
+        android:background="@drawable/button_background"
+        android:text="Take Picture"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="@+id/ivPicture"
+        app:layout_constraintHorizontal_bias="0.49"
+        app:layout_constraintStart_toStartOf="@+id/ivPicture"
+        app:layout_constraintTop_toBottomOf="@+id/captureVideo" />
+
+    <ImageView
+        android:id="@+id/ivPicture"
+        android:layout_width="341dp"
+        android:layout_height="262dp"
+        android:layout_marginTop="64dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+    <Button
+        android:id="@+id/btnCaptureVideo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Take video"
+        android:textColor="@color/white"
+        android:background="@drawable/button_background"
+        app:layout_constraintEnd_toEndOf="@+id/btnTakePicture"
+        app:layout_constraintHorizontal_bias="0.578"
+        app:layout_constraintStart_toStartOf="@+id/btnTakePicture"
+        app:layout_constraintTop_toBottomOf="@+id/btnTakePicture" />
+
+    <ImageView
+        android:id="@+id/captureVideo"
+        android:layout_width="141dp"
+        android:layout_height="133dp"
+        android:layout_marginTop="44dp"
+        app:layout_constraintEnd_toEndOf="@+id/ivPicture"
+        app:layout_constraintStart_toStartOf="@+id/ivPicture"
+        app:layout_constraintTop_toBottomOf="@+id/ivPicture"
+        app:srcCompat="@drawable/ic_baseline_account_circle_24" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -57,14 +57,14 @@
         android:id="@+id/btnSetAction"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="64dp"
+        android:layout_marginBottom="208dp"
         android:text="Set action"
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/btnImagePicker"
-        app:layout_constraintHorizontal_bias="0.426"
+        app:layout_constraintHorizontal_bias="0.338"
         app:layout_constraintStart_toStartOf="@+id/btnImagePicker" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

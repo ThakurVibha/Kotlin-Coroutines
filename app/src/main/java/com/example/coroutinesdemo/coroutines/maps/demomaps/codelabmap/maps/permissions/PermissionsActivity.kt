@@ -32,7 +32,6 @@ class PermissionsActivity : AppCompatActivity() {
     private val imagePickerContarct =
         registerForActivityResult(ActivityResultContracts.GetContent()) {
             ivResult.setImageURI(it)
-
         }
 
     @SuppressLint("SetTextI18n")

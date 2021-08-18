@@ -104,5 +104,9 @@ dependencies {
         implementation("androidx.constraintlayout:constraintlayout:2.1.0")
     }
 
+//dexter runtime permissions
+    dependencies{
+        implementation 'com.karumi:dexter:6.2.3'
+    }
 
 }

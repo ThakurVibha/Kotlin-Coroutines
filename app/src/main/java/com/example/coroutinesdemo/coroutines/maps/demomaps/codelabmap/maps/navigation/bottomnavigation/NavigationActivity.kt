@@ -41,14 +41,12 @@ class NavigationActivity : AppCompatActivity() {
         onBottomNavigationSelected()
     }
 
-
-
     private fun onBottomNavigationSelected() {
         bottom_navigation.setOnItemSelectedListener {
             Log.e("//", "onCreate: ")
             when (it.itemId) {
                 R.id.fragment1 -> {
-                    "this is toats".toast(this)
+                    "this is toast".toast(this)
                     setCurrentFragment(BottomNavigationFragment1())
                 }
 
