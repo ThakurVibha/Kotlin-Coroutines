@@ -1,52 +1,117 @@
 package com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.camera
 
-import android.R.attr
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
+import android.graphics.ImageDecoder
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
-import android.widget.MediaController
+import android.widget.Toast
 import android.widget.VideoView
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContract
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.example.coroutinesdemo.R
+import com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.toast
+import com.theartofdev.edmodo.cropper.CropImage
 import kotlinx.android.synthetic.main.activity_camera.*
-
+import kotlinx.android.synthetic.main.activity_demo_service.*
+import java.io.File
 
 
 class CameraActivity : AppCompatActivity() {
-    companion object {
-        private const val VIDEO_CAPTURE = 1
-        private const val CAMERA_CAPTURE = 2
+    var uri: Uri? = null
+    lateinit var file: File
+    val opencam = registerForActivityResult(ActivityResultContracts.TakePicture()) {
+        if (it) {
+            Log.e("//", ": " + uri)
+            val bitmap = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                ImageDecoder.decodeBitmap(ImageDecoder.createSource(contentResolver, uri!!))
+            } else {
+                MediaStore.Images.Media.getBitmap(contentResolver, uri)
+            }
+            capturedImage.setImageBitmap(bitmap)
 
+        }
+    }
+    var imageUri: Uri? = null
+    lateinit var activityLauncher: ActivityResultLauncher<Any?>
+    lateinit var videoView: VideoView
+
+    private val takeImageResult = registerForActivityResult(ActivityResultContracts.TakePicture()) {
+        "Hi from camera" + it.toast(this)
+//            capturedImage.setImageURI(it)
+    }
+    private val takeVideoResult =
+        registerForActivityResult(ActivityResultContracts.CaptureVideo()) {
+
+        }
+
+    private val cropActivityResultContract = object : ActivityResultContract<Any?, Uri?>() {
+        override fun createIntent(context: Context, input: Any?): Intent {
+            return CropImage.activity().setAspectRatio(16, 9)
+                .setBackgroundColor(R.color.black)
+                .setActivityMenuIconColor(R.color.teal_700)
+                .setAllowFlipping(true)
+                .setBorderCornerLength(8F)
+
+                .getIntent(this@CameraActivity)
+        }
+
+        override fun parseResult(resultCode: Int, intent: Intent?): Uri? {
+            return CropImage.getActivityResult(intent).uri
+        }
     }
 
-    lateinit var videoView: VideoView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_camera)
+        videoView = VideoView(this)
         hasCamera()
         onClick()
+        activityLauncher = registerForActivityResult(cropActivityResultContract) {
+            capturedImage.setImageURI(it)
+        }
+    }
+
+    private fun launchVideoResult() {
+        takeVideoResult.launch(null)
+    }
+
+    private fun launchResult() {
+        CropImage.startPickImageActivity(this)
+//        file = File.createTempFile("tmp_image_file${System.currentTimeMillis()}", ".png", cacheDir).apply { createNewFile() }
+//        uri = FileProvider.getUriForFile(
+//            this,
+//            "$packageName.provider",
+//            file
+//        )
+//        opencam.launch(uri)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        val activityResult = CropImage.getActivityResult(data)
+        capturedImage.setImageURI(activityResult.uri)
     }
 
     private fun onClick() {
         btnTakePicture.setOnClickListener {
-            captureImage()
+            Toast.makeText(this, "Starting Camera....Please wait", Toast.LENGTH_SHORT).show()
+            launchResult()
         }
         btnCaptureVideo.setOnClickListener {
-            captureVideo()
-            val mediaController = MediaController(this)
-            mediaController.setAnchorView(videoView)
-            videoView.setMediaController(mediaController)
-            videoView = findViewById(R.id.captureVideo)
+            launchVideoResult()
         }
-    }
+        btnCrop.setOnClickListener {
+            activityLauncher.launch(it)
+        }
 
-
-    private fun captureImage() {
-        val captureImageIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        startActivityForResult(captureImageIntent, CAMERA_CAPTURE)
     }
 
     private fun hasCamera(): Boolean {
@@ -54,22 +119,6 @@ class CameraActivity : AppCompatActivity() {
         return packageManager.hasSystemFeature(
             PackageManager.FEATURE_CAMERA_ANY
         )
-    }
-
-    private fun captureVideo() {
-        val videoIntent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
-        startActivityForResult(videoIntent, VIDEO_CAPTURE)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        val videoUri = data!!.data
-        if ( resultCode == RESULT_OK && requestCode == CAMERA_CAPTURE ) {
-            val picture = data!!.extras!!.get("data")
-            ivPicture.setImageBitmap(picture as Bitmap?)
-            videoView . setVideoURI (videoUri)
-            videoView.start()
-        }
     }
 
 }

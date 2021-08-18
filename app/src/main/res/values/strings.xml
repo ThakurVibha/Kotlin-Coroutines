@@ -71,5 +71,7 @@
     <string name="preview_description">Image and Video preview will appear here</string>
     <string name="btn_take_picture">Take Picture</string>
     <string name="btn_record_video">Record Video</string>
+    <string name="crop_image">Crop Image</string>
+    <string name="take_video">Take video</string>
 
 </resources>
