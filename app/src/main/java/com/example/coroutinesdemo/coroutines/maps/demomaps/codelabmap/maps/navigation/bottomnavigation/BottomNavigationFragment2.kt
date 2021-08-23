@@ -17,8 +17,7 @@ class BottomNavigationFragment2 : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         requireActivity().supportFragmentManager.beginTransaction().addToBackStack(
-            BottomNavigationFragment3.FRAGMENT_BACK_STACK
-        )
+            BottomNavigationFragment3.FRAGMENT_BACK_STACK)
         return inflater.inflate(R.layout.fragment_bottom_navigation2, container, false)
     }
 

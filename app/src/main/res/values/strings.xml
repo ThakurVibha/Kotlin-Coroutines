@@ -73,5 +73,11 @@
     <string name="btn_record_video">Record Video</string>
     <string name="crop_image">Crop Image</string>
     <string name="take_video">Take video</string>
+    <string name="permissions">Permissions</string>
+    <string name="app_title">Hi, how are you</string>
+    <string name="name">Name</string>
+    <string name="button">Button</string>
+    <string name="navigation_to_3">Navigation to 3</string>
+    <string name="navigate">Navigate</string>
 
 </resources>

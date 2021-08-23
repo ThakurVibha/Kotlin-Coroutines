@@ -2,7 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.coroutinesdemo">
-<uses-permission android:name="android.permission.CAMERA"/>
+
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
@@ -26,33 +27,39 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CoroutinesDemo">
-        <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
-            android:theme="@style/Base.Theme.AppCompat"/>
-
-<!--        <provider-->
-<!--            android:name="androidx.core.content.FileProvider"-->
-<!--            android:authorities="${applicationId}.provider"-->
-<!--            android:exported="false"-->
-<!--            android:grantUriPermissions="true">-->
-<!--            <meta-data-->
-<!--                android:name="android.support.FILE_PROVIDER_PATHS"-->
-<!--                android:resource="@xml/filepaths" />-->
-<!--        </provider>-->
+        <activity
+            android:name=".coroutines.maps.demomaps.codelabmap.maps.navigation.navgraph.NavgraphActivity"
+            android:exported="true" />
+        <activity
+            android:name=".coroutines.maps.demomaps.codelabmap.maps.camera.ChangeLanguageActivity"
+            android:exported="true" />
+        <activity
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat" /> <!-- <provider -->
+        <!-- android:name="androidx.core.content.FileProvider" -->
+        <!-- android:authorities="${applicationId}.provider" -->
+        <!-- android:exported="false" -->
+        <!-- android:grantUriPermissions="true"> -->
+        <!-- <meta-data -->
+        <!-- android:name="android.support.FILE_PROVIDER_PATHS" -->
+        <!-- android:resource="@xml/filepaths" /> -->
+        <!-- </provider> -->
         <activity android:name=".coroutines.maps.demomaps.codelabmap.maps.navigation.tablayout.TabLayoutActivity" />
         <activity android:name=".coroutines.maps.demomaps.codelabmap.maps.navigation.bottomnavigation.DummyActivity" />
         <activity android:name=".coroutines.maps.demomaps.codelabmap.maps.motionlayout.MotionLayoutActivity" />
         <activity android:name=".coroutines.maps.demomaps.codelabmap.maps.bottomsheets.SampleActivity" />
         <activity android:name=".coroutines.maps.demomaps.codelabmap.maps.navigation.bottomnavigation.NavigationActivity" />
         <activity android:name=".coroutines.maps.demomaps.codelabmap.maps.navigation.bottomnavigation.ToolbarActivity" />
-        <activity android:name=".coroutines.maps.demomaps.codelabmap.maps.camera.CameraActivity">
+        <activity android:name=".coroutines.maps.demomaps.codelabmap.maps.camera.CameraActivity"/>
+        <activity android:name=".coroutines.otpview.OtpActivity">
 
 
-            <intent-filter>
+        <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
 
         <service
             android:name=".coroutines.myservices.musicservice.MusicService"

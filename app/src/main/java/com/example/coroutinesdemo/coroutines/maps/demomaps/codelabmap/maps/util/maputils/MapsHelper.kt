@@ -96,7 +96,7 @@ object MapsHelper {
 
         val clusterManager = ClusterManager<MapPlace>(context, mainmap)
         clusterManager.renderer = PlaceRenderer(context, mainmap, clusterManager)
-        clusterManager.markerCollection.setInfoWindowAdapter(MarkerInfoWindowAdapter(context))
+//        clusterManager.markerCollection.setInfoWindowAdapter(MarkerInfoWindowAdapter(context))
         clusterManager.addItems(places)
         clusterManager.cluster()
         // Set ClusterManager as the OnCameraIdleListener so that it
