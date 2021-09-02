@@ -28,6 +28,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CoroutinesDemo">
         <activity
+            android:name=".coroutines.maps.demomaps.codelabmap.maps.await.activities.SecondActivity"
+            android:exported="true" />
+        <activity
+            android:name=".coroutines.maps.demomaps.codelabmap.maps.memer.MemeActivity"
+            android:exported="true" />
+        <activity
             android:name=".coroutines.maps.demomaps.codelabmap.maps.navigation.navgraph.NavgraphActivity"
             android:exported="true" />
         <activity
@@ -50,17 +56,25 @@
         <activity android:name=".coroutines.maps.demomaps.codelabmap.maps.bottomsheets.SampleActivity" />
         <activity android:name=".coroutines.maps.demomaps.codelabmap.maps.navigation.bottomnavigation.NavigationActivity" />
         <activity android:name=".coroutines.maps.demomaps.codelabmap.maps.navigation.bottomnavigation.ToolbarActivity" />
-        <activity android:name=".coroutines.maps.demomaps.codelabmap.maps.camera.CameraActivity"/>
-        <activity android:name=".coroutines.otpview.OtpActivity">
-
-
-        <intent-filter>
+        <activity android:name=".coroutines.maps.demomaps.codelabmap.maps.camera.CameraActivity" />
+        <activity android:name=".coroutines.maps.demomaps.codelabmap.maps.demoservice.alarm.AlarmServiceActivity" />
+        <activity
+            android:name="com.example.countdown.activities.CountActivity"
+            android:exported="true" />
+        <activity
+            android:name=".coroutines.maps.demomaps.codelabmap.maps.await.activities.CoroutinesAwaitActivity"
+            android:exported="true">
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
+        <service
+            android:name="com.example.countdown.activities.CounterService"
+            android:enabled="true"
+            android:exported="true" />
         <service
             android:name=".coroutines.myservices.musicservice.MusicService"
             android:enabled="true"
@@ -90,6 +104,7 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
+        <receiver android:name="com.example.countdown.utils.CounterReceiver" />
         <receiver android:name=".coroutines.myservices.musicservice.MusicBroadcastReceiver" />
         <receiver android:name=".coroutines.maps.demomaps.codelabmap.maps.sensors.StepCounterBroadcastReceiver" />
         <receiver android:name=".coroutines.maps.demomaps.codelabmap.maps.demoservice.alarm.AlarmAlertReceiver" />

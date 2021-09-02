@@ -79,5 +79,6 @@
     <string name="button">Button</string>
     <string name="navigation_to_3">Navigation to 3</string>
     <string name="navigate">Navigate</string>
+    <string name="launch_second_activity">Launch Second activity</string>
 
 </resources>
