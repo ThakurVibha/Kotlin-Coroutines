@@ -1,20 +1,19 @@
 package com.example.countdown.activities
 
-import android.annotation.SuppressLint
-import android.app.Notification
-import android.app.PendingIntent
-import android.app.Service
+import android.app.*
+import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.hardware.*
 import android.os.Binder
-import android.os.CountDownTimer
+import android.os.Build
 import android.os.IBinder
 import android.util.Log
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.MutableLiveData
-import com.example.countdown.activities.CountActivity.Companion.counter
-import com.example.countdown.utils.CounterReceiver
+import com.example.coroutinesdemo.R
 import com.example.countdown.utils.Utils
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -30,37 +29,39 @@ class CounterService : Service() {
     override fun onCreate() {
         super.onCreate()
         Toast.makeText(this, "Counter Service ", Toast.LENGTH_SHORT).show()
-        startCounter {
-            myCount.value = it
-            startForeground(10001, showNotification("Counter", "This is counter $it"))
-        }
+        val channelId =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                createNotificationChannel("my_service", "My Background Service")
+            } else {
+                // If earlier version channel ID is not used
+                // https://developer.android.com/reference/android/support/v4/app/NotificationCompat.Builder.html#NotificationCompat.Builder(android.content.Context)
+                ""
+            }
+
+        val notificationBuilder = NotificationCompat.Builder(this, channelId )
+        val notification = notificationBuilder.setOngoing(true)
+            .setSmallIcon(R.mipmap.ic_launcher)
+            .setPriority(NotificationCompat.PRIORITY_MIN)
+            .setCategory(Notification.CATEGORY_SERVICE)
+            .build()
+        startForeground(101, notification)
+
     }
 
     override fun onBind(p0: Intent?): IBinder? {
         return alarmBinder
     }
-
-    private fun startCounter(callback: (Float) -> Unit) {
-        object : CountDownTimer(30000, 1000) {
-            override fun onTick(p0: Long) {
-                Log.e("CounterTag", counter.toString())
-                callback(counter.toFloat())
-                counter++
-            }
-
-            @SuppressLint("SetTextI18n")
-            override fun onFinish() {
-
-            }
-        }.start()
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun createNotificationChannel(channelId: String, channelName: String): String{
+        val chan = NotificationChannel(channelId,
+            channelName, NotificationManager.IMPORTANCE_NONE)
+        chan.lightColor = Color.BLUE
+        chan.lockscreenVisibility = Notification.VISIBILITY_PRIVATE
+        val service = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        service.createNotificationChannel(chan)
+        return channelId
 
     }
-
-    fun getText(): String {
-        return "This is from service+"
-
-    }
-
 
     override fun onDestroy() {
         super.onDestroy()
@@ -73,7 +74,7 @@ class CounterService : Service() {
         notificationIntent.apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
-        val pendingIntent = Intent(this, CounterReceiver::class.java)
+        val pendingIntent = Intent(this, CountActivity::class.java)
         val buttonPendingIntent = PendingIntent.getBroadcast(this, 0, pendingIntent, 0)
         val notification: Notification =
             NotificationCompat.Builder(this, Utils.CHANNEL_ID)

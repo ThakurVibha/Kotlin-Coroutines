@@ -1,4 +1,4 @@
-package com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.await.activities
+package com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.coroutinesdemo.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

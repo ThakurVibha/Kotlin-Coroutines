@@ -1,6 +1,6 @@
-package com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.await.utils
+package com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.coroutinesdemo.utils
 
-import com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.await.activities.CoroutinesAwaitActivity
+import com.example.coroutinesdemo.coroutines.maps.demomaps.codelabmap.maps.coroutinesdemo.activities.CoroutinesAwaitActivity
 import kotlinx.coroutines.delay
 
 object CoroutinesUtils {

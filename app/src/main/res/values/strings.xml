@@ -80,5 +80,6 @@
     <string name="navigation_to_3">Navigation to 3</string>
     <string name="navigate">Navigate</string>
     <string name="launch_second_activity">Launch Second activity</string>
+    <string name="show_dialog">Show Dialog</string>
 
 </resources>

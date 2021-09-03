@@ -7,6 +7,7 @@
         <entry key="app/src/main/res/drawable/custom_dialog_round_corners.xml" value="0.22604166666666667" />
         <entry key="app/src/main/res/drawable/ic_baseline_account_circle_24.xml" value="0.22604166666666667" />
         <entry key="app/src/main/res/layout/activity_camera.xml" value="0.20989583333333334" />
+        <entry key="app/src/main/res/layout/activity_circle.xml" value="0.16927083333333334" />
         <entry key="app/src/main/res/layout/activity_coroutines_await.xml" value="0.20989583333333334" />
         <entry key="app/src/main/res/layout/activity_demo_service.xml" value="0.22552083333333334" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.20989583333333334" />
@@ -14,6 +15,7 @@
         <entry key="app/src/main/res/layout/activity_navgraph.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_otp.xml" value="0.22552083333333334" />
         <entry key="app/src/main/res/layout/activity_second.xml" value="0.19583333333333333" />
+        <entry key="app/src/main/res/layout/custom_layout.xml" value="0.16822916666666668" />
         <entry key="app/src/main/res/layout/fragment_bottom_navigation1.xml" value="0.22552083333333334" />
         <entry key="app/src/main/res/layout/fragment_bottom_navigation2.xml" value="0.22552083333333334" />
         <entry key="app/src/main/res/layout/fragment_bottom_navigation3.xml" value="0.22552083333333334" />
@@ -23,6 +25,7 @@
         <entry key="app/src/main/res/layout/layout_counter_activity.xml" value="0.20989583333333334" />
         <entry key="app/src/main/res/layout/motion_layout_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/progress_loading.xml" value="0.22552083333333334" />
+        <entry key="app/src/main/res/layout/toast_layout.xml" value="0.20989583333333334" />
       </map>
     </option>
   </component>

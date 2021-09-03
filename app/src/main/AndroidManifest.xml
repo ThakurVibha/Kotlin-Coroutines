@@ -27,8 +27,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CoroutinesDemo">
+
         <activity
-            android:name=".coroutines.maps.demomaps.codelabmap.maps.await.activities.SecondActivity"
+            android:name=".coroutines.maps.demomaps.codelabmap.maps.coroutinesdemo.activities.SecondActivity"
             android:exported="true" />
         <activity
             android:name=".coroutines.maps.demomaps.codelabmap.maps.memer.MemeActivity"
@@ -59,10 +60,12 @@
         <activity android:name=".coroutines.maps.demomaps.codelabmap.maps.camera.CameraActivity" />
         <activity android:name=".coroutines.maps.demomaps.codelabmap.maps.demoservice.alarm.AlarmServiceActivity" />
         <activity
-            android:name="com.example.countdown.activities.CountActivity"
-            android:exported="true" />
+            android:name=".coroutines.maps.demomaps.codelabmap.maps.coroutinesdemo.activities.CoroutinesAwaitActivity"
+            android:exported="true"
+            tools:ignore="ExtraText" />
+
         <activity
-            android:name=".coroutines.maps.demomaps.codelabmap.maps.await.activities.CoroutinesAwaitActivity"
+            android:name="com.example.countdown.activities.CountActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

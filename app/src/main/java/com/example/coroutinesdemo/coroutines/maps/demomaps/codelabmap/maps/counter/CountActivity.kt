@@ -77,7 +77,6 @@ class CountActivity : AppCompatActivity() {
     }
 
     private fun checkAppInBackground() {
-        title = "KotlinApp"
         val runningAppProcessInfo = ActivityManager.RunningAppProcessInfo()
         ActivityManager.getMyMemoryState(runningAppProcessInfo)
         appRunningBackground =
@@ -112,8 +111,9 @@ class CountActivity : AppCompatActivity() {
         CoroutineScope(Dispatchers.IO).launch {
             delay(10000)
             notificationManager.notify(
-                1001,
+                100,
                 showNewNotification("App stop", "App stopped")
+
             )
 
         }
